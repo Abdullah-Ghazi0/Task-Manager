@@ -11,8 +11,25 @@
         <h1>Task Manager</h1>
     </header>
     <div class="container">
+        <div class="input">
+            <input type="text">
+            <button>Add Task</button>
+        </div>
+        <div class="tasks">
+            <div class="taskList">
+                <h2>Todo</h2>
+                <div id="todo"></div>
+            </div>
+            <div class="taskList">
+                <h2>In-progress</h2>
+                <div id="doing"></div>
+            </div>
+            <div class="taskList">
+                <h2>Completed</h2>
+                <div id="done"></div>
+            </div>
+        </div>
     </div>
-
-    <script src="script.js" defer></script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
