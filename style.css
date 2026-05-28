@@ -47,9 +47,28 @@ header {
     padding: 8px;
 }
 
-.taskList {
+.column {
     flex: 1;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: start;
+    gap: 8px;
+
     height: 100%;
-    background-color: #9ad3ca;
     padding: 24px;
+}
+
+.taskList {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.card {
+    background-color: rgb(170, 221, 204);
+    padding: 16px;
+    border-radius: 8px;
+
 }

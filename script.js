@@ -6,32 +6,78 @@ const todo = document.querySelector("#todo");
 const inProgrss = document.querySelector("#doing");
 const completed = document.querySelector("#done");
 
+const template = document.querySelector("template")
+
 const tasks = []
 
-addBtn.addEventListener('click', e => {
-    const newTask = {
-        id: tasks.length + 1,
-        text: input.value,
-        status: "todo"
+class Task {
+    constructor(text) {
+        this.id = tasks.length + 1;
+        this.title = text;
+        this.description = "Do the Task!"
+        this.status = "todo";
     }
-    tasks.push(newTask)
-    renderUi();
-})
 
-function renderUi() {
+    changeStatus(newStatus) {
+        this.status = newStatus;
+    }
+
+    rmTask() {
+    const removedTask = tasks.splice((this.id) - 1, 1);
+    console.log(tasks)
+}
+}
+
+function render() {
     todo.innerHTML = '';
+    inProgrss.innerHTML = '';
+    completed.innerHTML = '';
 
     tasks.forEach((task)=> {
-        const taskElem = document.createElement('div');
-        const changeStatus = document.createElement('button');
-        const rmTasks = document.createElement('button');
 
-        changeStatus.textContent = "Change Staus";
-        rmTasks.textContent = "Delete";
+        const clone = template.content.cloneNode("true")
 
-        taskElem.textContent = task.text;
-        taskElem.append(changeStatus, rmTasks)
+        const title =  clone.querySelector('h3');
+        const desc = clone.querySelector('p');
+        const status = clone.querySelector('select');
+        const rm = clone.querySelector('button');
 
-        todo.append(taskElem);
+        title.textContent = task.title;
+        desc.textContent = task.description;
+        status.value = task.status;
+        
+        status.addEventListener("change", (e)=> {
+            task.status = e.target.value;
+            render();
+        })
+
+        rm.addEventListener("click", ()=> {
+            task.rmTask();
+            render();
+        })
+
+        if (task.status === 'todo') {
+            todo.appendChild(clone);
+        } else if (task.status === 'doing') {
+            inProgrss.appendChild(clone);
+        } else if (task.status === 'done') {
+            completed.appendChild(clone);
+        }
     })
 }
+
+function createNewTask() {
+    let taskName = input.value;
+    if (!taskName) return;
+
+    const newTask = new Task(taskName);
+    tasks.push(newTask);
+    render();
+
+    input.value = '';
+}
+
+addBtn.addEventListener('click', createNewTask)
+window.addEventListener('keydown', e => {
+    if (e.key === "Enter") createNewTask();
+})

@@ -16,20 +16,33 @@
             <button>Add Task</button>
         </div>
         <div class="tasks">
-            <div class="taskList">
+            <div class="column">
                 <h2>Todo</h2>
-                <div id="todo"></div>
+                <div id="todo" class="taskList"></div>
             </div>
-            <div class="taskList">
+            <div class="column">
                 <h2>In-progress</h2>
-                <div id="doing"></div>
+                <div id="doing" class="taskList"></div>
             </div>
-            <div class="taskList">
+            <div class="column">
                 <h2>Completed</h2>
-                <div id="done"></div>
+                <div id="done" class="taskList"></div>
             </div>
         </div>
     </div>
-    <script type="module" src="script.js"></script>
+    <template>
+        <div class="card">
+            <h3></h3>
+            <p></p>
+            <select name="status" id="status">
+                <option value="todo">Todo</option>
+                <option value="doing">In-progress</option>
+                <option value="done">Completed</option>
+            </select>
+            <button>Delete</button>
+
+        </div>
+    </template>
+    <script src="script.js" defer></script>
 </body>
 </html>
