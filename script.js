@@ -8,11 +8,12 @@ const completed = document.querySelector("#done");
 
 const template = document.querySelector("template")
 
+let id = 0;
 const tasks = []
 
 class Task {
     constructor(text) {
-        this.id = tasks.length + 1;
+        this.id = getNewId();
         this.title = text;
         this.description = "Do the Task!"
         this.status = "todo";
@@ -23,9 +24,18 @@ class Task {
     }
 
     rmTask() {
-    const removedTask = tasks.splice((this.id) - 1, 1);
-    console.log(tasks)
+    const removedTask = tasks.splice(getIndex(this), 1);
 }
+}
+
+function getNewId() {
+    id++;
+    return id;
+}
+
+function getIndex(taskToFind) {
+    const index = tasks.findIndex(task => task.id === taskToFind.id);
+    return index;
 }
 
 function render() {
