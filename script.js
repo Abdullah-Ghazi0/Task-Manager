@@ -1,12 +1,18 @@
 const container = document.querySelector(".container")
+
+const newTaskbtn = document.querySelector('#newTaskBtn')
+
 const input = document.querySelector("input")
-const addBtn = document.querySelector("button")
+const addBtn = document.querySelector("#addTask")
 
 const todo = document.querySelector("#todo");
 const inProgrss = document.querySelector("#doing");
 const completed = document.querySelector("#done");
 
 const template = document.querySelector("template")
+
+const closeBtn = document.querySelector('.close')
+const overlay = document.querySelector('.modal-overlay')
 
 let id = 0;
 const tasks = []
@@ -83,11 +89,27 @@ function createNewTask() {
     const newTask = new Task(taskName);
     tasks.push(newTask);
     render();
+    toggleModal();
 
     input.value = '';
+}
+
+function toggleModal() {
+    let currentState = overlay.style.display;
+    overlay.style.display = currentState === 'flex' ? 'none' : 'flex';
 }
 
 addBtn.addEventListener('click', createNewTask)
 window.addEventListener('keydown', e => {
     if (e.key === "Enter") createNewTask();
+})
+
+closeBtn.addEventListener("click", toggleModal)
+
+newTaskbtn.addEventListener("click", toggleModal)
+
+overlay.addEventListener('click', (e)=> {
+    if (e.target === overlay) {
+        toggleModal();
+    }
 })
