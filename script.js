@@ -12,10 +12,13 @@ const completed = document.querySelector("#done");
 const template = document.querySelector("template")
 
 const closeBtn = document.querySelector('.close')
-const overlay = document.querySelector('.modal-overlay')
+const modal = document.querySelector('.modal-overlay')
 
 let id = 0;
-const tasks = []
+let state = {
+    tasks: [],
+    modal: modal.classList.contains('show'),
+}
 
 class Task {
     constructor(text) {
@@ -30,7 +33,7 @@ class Task {
     }
 
     rmTask() {
-    const removedTask = tasks.splice(getIndex(this), 1);
+    const removedTask = state.tasks.splice(getIndex(this), 1);
 }
 }
 
@@ -40,7 +43,7 @@ function getNewId() {
 }
 
 function getIndex(taskToFind) {
-    const index = tasks.findIndex(task => task.id === taskToFind.id);
+    const index = state.tasks.findIndex(task => task.id === taskToFind.id);
     return index;
 }
 
@@ -49,7 +52,7 @@ function render() {
     inProgrss.innerHTML = '';
     completed.innerHTML = '';
 
-    tasks.forEach((task)=> {
+    state.tasks.forEach((task)=> {
 
         const clone = template.content.cloneNode("true")
 
@@ -87,7 +90,7 @@ function createNewTask() {
     if (!taskName) return;
 
     const newTask = new Task(taskName);
-    tasks.push(newTask);
+    state.tasks.push(newTask);
     render();
     toggleModal();
 
@@ -95,25 +98,35 @@ function createNewTask() {
 }
 
 function toggleModal() {
-    let showState = overlay.classList.contains('show');
-    if (showState) {
-        overlay.classList.remove('show');
+    if (state.modal) {
+        modal.classList.remove('show');
+        state.modal = false;
     } else {
-        overlay.classList.add('show');
+        modal.classList.add('show');
+        state.modal = true;
+        requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+                input.focus();
+            }) 
+        });
     }
 }
 
 addBtn.addEventListener('click', createNewTask)
 window.addEventListener('keydown', e => {
-    if (e.key === "Enter") createNewTask();
+    if (e.key === "Enter" && state.modal) createNewTask();
 })
 
 closeBtn.addEventListener("click", toggleModal)
 
 newTaskbtn.addEventListener("click", toggleModal)
 
-overlay.addEventListener('click', (e)=> {
-    if (e.target === overlay) {
+modal.addEventListener('click', (e)=> {
+    if (e.target === modal) {
         toggleModal();
     }
+})
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && state.modal) toggleModal();
 })
