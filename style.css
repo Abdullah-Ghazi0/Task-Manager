@@ -7,7 +7,7 @@
 body {
     min-height: 100dvh;
     background: linear-gradient(135deg, #42858C, #5DA399);
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-family: 'Inter', sans-serif;
 }
 header {
     height: 65px;
@@ -70,7 +70,7 @@ header {
 }
 
 .card {
-    background-color: rgb(170, 221, 204);
+    background-color: rgb(161, 141, 116);
     padding: 16px;
     border-radius: 8px;
     width: 100%;
@@ -127,8 +127,8 @@ header {
     width: 570px;
     
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
 
     transform: translateY(-20px);
     transition: transform 200ms ease;
@@ -158,4 +158,42 @@ header {
 .close:active {
     color: #000000;
     scale: 0.9;
+}
+
+#addTask {
+    background: #3195ad;
+    color: white;
+    border: none;
+    padding: 8px;
+    border-radius: 8px;
+
+    margin: 8px;
+
+    font-size: 18px;
+    transform: scale(1);
+    transition: transform 100ms ease;
+}
+
+#addTask:hover {
+    background-color: #369eb8;
+}
+
+#addTask:active {
+    transform: scale(0.95);
+    background-color: #2b869c;
+}
+
+.modal-head {
+    font-size: 22px;
+    font-weight: 600;
+
+    padding: 12px;
+    margin: 12px;
+}
+
+.modal-form {
+    height: 50%;
+    
+    padding: 12px;
+    margin: 8px;
 }
