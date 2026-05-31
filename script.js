@@ -95,8 +95,12 @@ function createNewTask() {
 }
 
 function toggleModal() {
-    let currentState = overlay.style.display;
-    overlay.style.display = currentState === 'flex' ? 'none' : 'flex';
+    let showState = overlay.classList.contains('show');
+    if (showState) {
+        overlay.classList.remove('show');
+    } else {
+        overlay.classList.add('show');
+    }
 }
 
 addBtn.addEventListener('click', createNewTask)

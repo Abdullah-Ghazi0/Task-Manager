@@ -78,25 +78,45 @@ header {
 }
 
 #newTaskBtn {
-    background-color: aliceblue;
+    background-color: #f0f8ff;
     border-radius: 8px;
     border: none;
     padding: 8px 12px;
     font-size: 18px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+
+    transition: all 200ms ease;
+}
+
+#newTaskBtn:hover {
+    background-color: #e1e6eb;
+}
+
+#newTaskBtn:active {
+    background-color: white;
+    scale: 0.95;
 }
 
 .modal-overlay {
-    position: absolute;
+    position: fixed;
     height: 100%;
     width: 100%;
     background-color: rgba(0, 0, 0, 0.3);
     top: 0;
     left: 0;
 
-    display: none;
+    display: flex;
     justify-content: center;
     align-items: center;
+
+    opacity: 0;
+    visibility: hidden;
     transition: all ease 200ms;
+}
+
+.modal-overlay.show {
+    opacity: 1;
+    visibility: visible;
 }
 
 .modal {
@@ -109,6 +129,13 @@ header {
     display: flex;
     align-items: center;
     justify-content: center;
+
+    transform: translateY(-20px);
+    transition: transform 200ms ease;
+}
+
+.modal-overlay.show .modal {
+    transform: translateY(0);
 }
 
 .close {
@@ -125,10 +152,10 @@ header {
 }
 
 .close:hover {
-    color: #000;
+    color: #525252;
 }
 
 .close:active {
-    color: #525252;
+    color: #000000;
     scale: 0.9;
 }
