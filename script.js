@@ -3,7 +3,10 @@ const container = document.querySelector(".container")
 const newTaskbtn = document.querySelector('#newTaskBtn')
 
 const form = document.querySelector('form')
-const title = document.querySelector("#title")
+const titleField = document.querySelector("#title")
+const priorityField = document.querySelector("#priority")
+const dateField = document.querySelector("#dueDate")
+const descField = document.querySelector("#description")
 const addBtn = document.querySelector("#addTask")
 
 const todo = document.querySelector("#todo");
@@ -22,10 +25,12 @@ let state = {
 }
 
 class Task {
-    constructor(text) {
+    constructor({title, priority, date, desc}) {
         this.id = getNewId();
-        this.title = text;
-        this.description = "Do the Task!"
+        this.title = title;
+        this.priority = priority;
+        this.date = date || "No Due Date";
+        this.description = desc || "Do the Task!"
         this.status = "todo";
     }
 
@@ -85,20 +90,34 @@ function render() {
         }
     })
 }
-function cleanForm() {
-    title.value = '';
+function resetForm() {
+    titleField.value = '';
     addBtn.classList.add('disabled')
 }
 
-function createNewTask() {
-    let taskName = title.value;
-    if (!taskName) return;
+function getFormData() {
+    let title = titleField.value;
+    let priority = priorityField.value;
+    let date = dateField.value ? new Date(dateField.value): null;
+    let desc = descField.value;
 
-    const newTask = new Task(taskName);
+    return {
+        title: title,
+        priority: priority,
+        date: date,
+        desc: desc
+    }
+}
+
+function createNewTask() {
+
+    const newTask = new Task(getFormData());
     state.tasks.push(newTask);
     render();
     toggleModal();
-    cleanForm();
+    resetForm();
+
+    console.log(state.tasks)
 }
 
 function returnFocus(elem) {
@@ -117,17 +136,20 @@ function toggleModal() {
     } else {
         modal.classList.add('show');
         state.modal = true;
-        returnFocus(title);
+        returnFocus(titleField);
     }
 }
 
-addBtn.addEventListener('click', createNewTask)
+addBtn.addEventListener('click', e => {
+    if (!addBtn.classList.contains("disabled")) createNewTask();
+})
+
 window.addEventListener('keydown', e => {
     if (e.key === "Enter" && state.modal) createNewTask();
 })
 
-title.addEventListener('input', ()=> {
-    if (title.value !== '') {
+titleField.addEventListener('input', ()=> {
+    if (titleField.value !== '') {
         addBtn.classList.remove("disabled")
     } else {
         addBtn.classList.add("disabled")
