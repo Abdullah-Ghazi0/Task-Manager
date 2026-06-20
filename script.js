@@ -66,7 +66,7 @@ function render() {
         status.value = task.status;
         
         status.addEventListener("change", (e)=> {
-            task.status = e.target.value;
+            task.changeStatus(e.target.value);
             render();
         })
 
