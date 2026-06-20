@@ -36,10 +36,10 @@
             <div class="modal-head">
                 Create New Task
             </div>
-            <form class="modal-form">
+            <form class="modal-form" action="#">
                 <div class="group">
                     <label for="title" class="fieldLabel">Title:</label>
-                    <input type="text" class="inputField titleField" name="title" id="title" placeholder="Enter a Title" autocomplete="off" required>
+                    <input type="text" class="inputField titleField" name="title" id="title" placeholder="Enter a Title" autocomplete="off">
                 </div>
                 <div class="group">
                     <label for="priority" class="fieldLabel">Priority:</label>
@@ -58,7 +58,7 @@
                     <textarea class="inputField descriptionField" name="description" id="description" placeholder="Enter a task description"></textarea>
                 </div>
             </form>
-            <button id="addTask">Create Task</button>
+            <button id="addTask" class="createBtn disabled">Create Task</button>
         </div>
     </div>
     <template>

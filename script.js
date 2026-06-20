@@ -2,7 +2,8 @@ const container = document.querySelector(".container")
 
 const newTaskbtn = document.querySelector('#newTaskBtn')
 
-const input = document.querySelector("input")
+const form = document.querySelector('form')
+const title = document.querySelector("#title")
 const addBtn = document.querySelector("#addTask")
 
 const todo = document.querySelector("#todo");
@@ -84,37 +85,58 @@ function render() {
         }
     })
 }
+function cleanForm() {
+    title.value = '';
+    addBtn.classList.add('disabled')
+}
 
 function createNewTask() {
-    let taskName = input.value;
+    let taskName = title.value;
     if (!taskName) return;
 
     const newTask = new Task(taskName);
     state.tasks.push(newTask);
     render();
     toggleModal();
+    cleanForm();
+}
 
-    input.value = '';
+function returnFocus(elem) {
+    requestAnimationFrame(()=> {
+        requestAnimationFrame(()=> {
+            elem.focus();
+        })
+    })
 }
 
 function toggleModal() {
     if (state.modal) {
         modal.classList.remove('show');
         state.modal = false;
+        returnFocus(newTaskbtn);
     } else {
         modal.classList.add('show');
         state.modal = true;
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                input.focus();
-            }) 
-        });
+        returnFocus(title);
     }
 }
 
 addBtn.addEventListener('click', createNewTask)
 window.addEventListener('keydown', e => {
     if (e.key === "Enter" && state.modal) createNewTask();
+})
+
+title.addEventListener('input', ()=> {
+    if (title.value !== '') {
+        addBtn.classList.remove("disabled")
+    } else {
+        addBtn.classList.add("disabled")
+    }
+    
+})
+
+form.addEventListener('submit', e => {
+    e.preventDefault();
 })
 
 closeBtn.addEventListener("click", toggleModal)
