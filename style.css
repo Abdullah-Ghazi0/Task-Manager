@@ -92,7 +92,8 @@ header {
     background-color: rgb(116, 150, 161);
     padding: 16px;
     border-radius: 12px;
-    min-height: 180px;
+    display: flex;
+    flex-direction: column;
 }
 
 #newTaskBtn {
@@ -265,4 +266,8 @@ header {
     height: 60px;
     font-family: inherit;
     padding: 8px 10px;
+}
+
+.prio {
+    color: red;
 }

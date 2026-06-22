@@ -66,10 +66,14 @@ function render() {
         const desc = clone.querySelector('p');
         const status = clone.querySelector('select');
         const rm = clone.querySelector('button');
+        const prio = clone.querySelector('.prio');
+        const date = clone.querySelector('span');
 
         title.textContent = task.title;
         desc.textContent = task.description;
         status.value = task.status;
+        prio.textContent = task.priority;
+        date.textContent = task.date;
         
         status.addEventListener("change", (e)=> {
             task.changeStatus(e.target.value);
@@ -116,8 +120,6 @@ function createNewTask() {
     render();
     toggleModal();
     resetForm();
-
-    console.log(state.tasks)
 }
 
 function returnFocus(elem) {
