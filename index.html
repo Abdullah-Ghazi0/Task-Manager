@@ -63,16 +63,22 @@
     </div>
     <template>
         <div class="card">
-            <h3></h3>
-            <p></p>
-            <div class="prio"></div>
-            <span></span>
-            <select name="status" id="status">
-                <option value="todo">Todo</option>
-                <option value="doing">In-progress</option>
-                <option value="done">Completed</option>
-            </select>
-            <button>Delete</button>
+            <div class="card-head">
+                <h3 class="card-title"></h3>
+                <p class="card-desc"></p>
+            </div>
+            <div class="card-details">
+                <div class="prio"></div>
+                <span class="card-date"></span>
+            </div>
+            <div class="card-action">
+                <select name="status" id="status" class="card-status">
+                    <option value="todo">Todo</option>
+                    <option value="doing">In-progress</option>
+                    <option value="done">Completed</option>
+                </select>
+                <button class="card-delete">🗑</button>
+            </div>
         </div>
     </template>
     <script src="script.js" defer></script>

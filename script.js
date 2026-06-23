@@ -74,6 +74,9 @@ function render() {
         status.value = task.status;
         prio.textContent = task.priority;
         date.textContent = task.date;
+
+        const priorityClass = {"Low":'prio-low', "Mid":'prio-mid', "High":'prio-high'}
+        prio.classList.add(priorityClass[task.priority])
         
         status.addEventListener("change", (e)=> {
             task.changeStatus(e.target.value);
@@ -97,13 +100,20 @@ function render() {
 function resetForm() {
     titleField.value = '';
     addBtn.classList.add('disabled')
+    priorityField.value = 'Low';
+    dateField.value = ''
+    descField.value = ''
 }
 
 function getFormData() {
     let title = titleField.value;
     let priority = priorityField.value;
-    let date = dateField.value ? new Date(dateField.value): null;
+    let date = dateField.value;
     let desc = descField.value;
+
+    if (date) {
+        date = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+    }
 
     return {
         title: title,
@@ -147,7 +157,10 @@ addBtn.addEventListener('click', e => {
 })
 
 window.addEventListener('keydown', e => {
-    if (e.key === "Enter" && state.modal) createNewTask();
+    if (e.key !== "Enter") return;
+    if (!state.modal) return;
+    if (addBtn.classList.contains("disabled")) return;
+    createNewTask();
 })
 
 titleField.addEventListener('input', ()=> {
