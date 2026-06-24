@@ -11,7 +11,7 @@ body {
 }
 header {
     height: 65px;
-    background: #35393C;
+    background: #293331;
     margin-bottom: 42px;
     color: rgb(255, 253, 240);
     text-align: center;
@@ -20,7 +20,7 @@ header {
 }
 
 .container {
-    background-color: #7bdbda;
+    background-color: #a1cfcc;
     margin: auto;
     width: clamp(400px, 60vw, 1100px);
     height: 85dvh;
@@ -57,6 +57,19 @@ header {
     gap: 8px;
 
     height: 100%;
+    background: rgba(255,255,255,0.2);;
+    border-radius: 16px;
+    padding: 12px;
+}
+
+.column h2 {
+    font-weight: 600;
+    color: #334155;
+    letter-spacing: 0.05em;
+    padding-bottom: 10px;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    width: 100%;
+    text-align: center;
 }
 
 .taskList {
@@ -64,11 +77,21 @@ header {
     flex-direction: column;
     gap: 8px;
     width: 100%;
+    height: 100%;
     padding: 4px 18px;
     overflow-y: auto;
 
     scrollbar-width: thin;                        
     scrollbar-color: rgba(0,0,0,0.2) transparent; 
+}
+
+.taskList.empty {
+    display: flex;
+    justify-content: center;
+    color: rgba(66, 66, 66, 0.7);
+    text-align: center;
+    margin: auto;
+
 }
 
 .taskList::-webkit-scrollbar {
@@ -89,22 +112,24 @@ header {
 }
 
 #newTaskBtn {
-    background-color: #f0f8ff;
-    border-radius: 8px;
+    background-color: #313847;
+    color: white;
+    border-radius: 10px;
     border: none;
-    padding: 8px 12px;
+    padding: 10px 20px;
     font-size: 18px;
+    font-weight: 500;
+    cursor: pointer;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
 
     transition: all 200ms ease;
 }
 
 #newTaskBtn:hover {
-    background-color: #e1e6eb;
+    background: #1e293b;
 }
 
 #newTaskBtn:active {
-    background-color: white;
     scale: 0.95;
 }
 
@@ -274,6 +299,8 @@ header {
 
 .card-title {
     font-size: 18px;
+    color: #0f172a;
+    font-weight: 600;
 }
 
 .prio {

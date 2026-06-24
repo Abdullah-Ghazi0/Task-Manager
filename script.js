@@ -13,6 +13,10 @@ const todo = document.querySelector("#todo");
 const inProgrss = document.querySelector("#doing");
 const completed = document.querySelector("#done");
 
+const todoCountBox = document.querySelector("#todoCount");
+const doingCountBox = document.querySelector("#doingCount");
+const doneCountBox = document.querySelector("#doneCount");
+
 const template = document.querySelector("template")
 
 const closeBtn = document.querySelector('.close')
@@ -51,6 +55,29 @@ function getNewId() {
 function getIndex(taskToFind) {
     const index = state.tasks.findIndex(task => task.id === taskToFind.id);
     return index;
+}
+
+function taskCounts(column, countBox) {
+    if (column.children.length) {
+        countBox.textContent = `(${column.children.length})`
+    } else {
+        countBox.textContent = '';
+    }
+}
+
+function checkEmptyColumns() {
+    showEmptyColumn(todo);
+    showEmptyColumn(inProgrss);
+    showEmptyColumn(completed);
+}
+
+function showEmptyColumn(column) {
+    if (column.children.length <= 0) {
+        column.classList.add('empty');
+        column.textContent = 'No tasks yet'
+    } else {
+        column.classList.remove('empty');
+    }
 }
 
 function render() {
@@ -96,6 +123,12 @@ function render() {
             completed.appendChild(clone);
         }
     })
+
+    taskCounts(todo, todoCountBox);
+    taskCounts(inProgrss, doingCountBox);
+    taskCounts(completed, doneCountBox);
+
+    checkEmptyColumns()
 }
 function resetForm() {
     titleField.value = '';
