@@ -22,15 +22,9 @@ const template = document.querySelector("template")
 const closeBtn = document.querySelector('.close')
 const modal = document.querySelector('.modal-overlay')
 
-let id = 0;
-let state = {
-    tasks: [],
-    modal: modal.classList.contains('show'),
-}
-
 class Task {
     constructor({title, priority, date, desc}) {
-        this.id = getNewId();
+        this.id = id++;
         this.title = title;
         this.priority = priority;
         this.date = date || "No Due Date";
@@ -40,16 +34,34 @@ class Task {
 
     changeStatus(newStatus) {
         this.status = newStatus;
+        updateStorage()
     }
 
     rmTask() {
-    const removedTask = state.tasks.splice(getIndex(this), 1);
-}
+        const removedTask = state.tasks.splice(getIndex(this), 1);
+        updateStorage()
+    }
+
+    static formJSON(data) {
+        return Object.assign(Object.create(Task.prototype), data)
+    }
 }
 
-function getNewId() {
-    id++;
-    return id;
+let state = {
+    tasks: getStorageData(),
+    modal: modal.classList.contains('show'),
+}
+let id = getLastId();
+
+function getStorageData() {
+    let rawTasks = JSON.parse(localStorage.getItem('tasks'));
+    if (!rawTasks) return []
+    return rawTasks.map(data => Task.formJSON(data));
+}
+
+function getLastId() {
+    let lastTask = state.tasks.at(-1);
+    return (lastTask?.id ?? 0) + 1;
 }
 
 function getIndex(taskToFind) {
@@ -156,10 +168,16 @@ function getFormData() {
     }
 }
 
+function updateStorage() {
+    const taskStr = JSON.stringify(state.tasks)
+    localStorage.setItem('tasks', taskStr)
+}
+
 function createNewTask() {
 
     const newTask = new Task(getFormData());
     state.tasks.push(newTask);
+    updateStorage();
     render();
     toggleModal();
     resetForm();
@@ -222,3 +240,5 @@ modal.addEventListener('click', (e)=> {
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && state.modal) toggleModal();
 })
+
+render();
