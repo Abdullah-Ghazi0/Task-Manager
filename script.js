@@ -106,6 +106,11 @@ function getTasks() {
     return currentTasks;
 }
 
+function showHighlight(text) {
+    let regex = new RegExp(state.search, "gi")
+    return text.replace(regex, `<span class="highlighted">$&</span>`)
+}
+
 function render() {
     todo.innerHTML = '';
     inProgrss.innerHTML = '';
@@ -124,8 +129,16 @@ function render() {
         const prio = clone.querySelector('.prio');
         const date = clone.querySelector('span');
 
-        title.textContent = task.title;
-        desc.textContent = task.description;
+        let titleStr = task.title;
+        let descStr = task.description
+
+        if (state.search) {
+            titleStr = showHighlight(titleStr);
+            descStr = showHighlight(descStr);
+        }
+
+        title.innerHTML = titleStr;
+        desc.innerHTML = descStr;
         status.value = task.status;
         prio.textContent = task.priority;
         date.textContent = task.date;
@@ -220,6 +233,12 @@ function toggleModal() {
     }
 }
 
+function cleanSearch(rawStr) {
+    rawStr = rawStr.toLowerCase();
+    let escapingRegex = /[.*+?^${}()|[\]\\]/g
+    return rawStr.replace(escapingRegex, "\\$&");
+}
+
 addBtn.addEventListener('click', e => {
     if (!addBtn.classList.contains("disabled")) createNewTask();
 })
@@ -260,7 +279,7 @@ document.addEventListener('keydown', (e) => {
 
 searchBar.addEventListener('input', e => {
     let searchQuery = searchBar.value;
-    state.search = searchQuery.toLowerCase();
+    state.search = cleanSearch(searchQuery)
     render();
 })
 

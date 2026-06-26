@@ -390,3 +390,7 @@ header {
 .card-delete:active {
     scale: 0.92;
 }
+
+.highlighted {
+    background-color: yellow;
+}
