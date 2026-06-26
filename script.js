@@ -107,7 +107,8 @@ function getTasks() {
 }
 
 function showHighlight(text) {
-    let regex = new RegExp(state.search, "gi")
+    let escapedSearch = cleanSearch(state.search)
+    let regex = new RegExp(escapedSearch, "gi")
     return text.replace(regex, `<span class="highlighted">$&</span>`)
 }
 
@@ -234,9 +235,8 @@ function toggleModal() {
 }
 
 function cleanSearch(rawStr) {
-    rawStr = rawStr.toLowerCase();
     let escapingRegex = /[.*+?^${}()|[\]\\]/g
-    return rawStr.replace(escapingRegex, "\\$&");
+    return rawStr.replace(escapingRegex, `\\$&`);
 }
 
 addBtn.addEventListener('click', e => {
@@ -279,7 +279,7 @@ document.addEventListener('keydown', (e) => {
 
 searchBar.addEventListener('input', e => {
     let searchQuery = searchBar.value;
-    state.search = cleanSearch(searchQuery)
+    state.search = searchQuery.toLowerCase()
     render();
 })
 
