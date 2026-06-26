@@ -17,10 +17,12 @@ const todoCountBox = document.querySelector("#todoCount");
 const doingCountBox = document.querySelector("#doingCount");
 const doneCountBox = document.querySelector("#doneCount");
 
-const template = document.querySelector("template")
+const template = document.querySelector("template");
 
-const closeBtn = document.querySelector('.close')
-const modal = document.querySelector('.modal-overlay')
+const closeBtn = document.querySelector('.close');
+const modal = document.querySelector('.modal-overlay');
+
+const searchBar = document.querySelector('#searchField');
 
 class Task {
     constructor({title, priority, date, desc}) {
@@ -50,6 +52,7 @@ class Task {
 let state = {
     tasks: getStorageData(),
     modal: modal.classList.contains('show'),
+    search: '',
 }
 let id = getLastId();
 
@@ -92,12 +95,25 @@ function showEmptyColumn(column) {
     }
 }
 
+function filterTasks(task) {
+    let title = task.title.toLowerCase();
+    let desc = task.description.toLowerCase();
+    return title.includes(state.search) || desc.includes(state.search);
+}
+
+function getTasks() {
+    const currentTasks = state.tasks.filter(filterTasks);
+    return currentTasks;
+}
+
 function render() {
     todo.innerHTML = '';
     inProgrss.innerHTML = '';
     completed.innerHTML = '';
 
-    state.tasks.forEach((task)=> {
+    const taskToRender = getTasks();
+
+    taskToRender.forEach(task => {
 
         const clone = template.content.cloneNode("true")
 
@@ -142,6 +158,7 @@ function render() {
 
     checkEmptyColumns()
 }
+
 function resetForm() {
     titleField.value = '';
     addBtn.classList.add('disabled')
@@ -239,6 +256,12 @@ modal.addEventListener('click', (e)=> {
 
 document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && state.modal) toggleModal();
+})
+
+searchBar.addEventListener('input', e => {
+    let searchQuery = searchBar.value;
+    state.search = searchQuery.toLowerCase();
+    render();
 })
 
 render();
