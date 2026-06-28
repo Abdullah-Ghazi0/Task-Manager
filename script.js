@@ -23,13 +23,15 @@ const closeBtn = document.querySelector('.close');
 const modal = document.querySelector('.modal-overlay');
 
 const searchBar = document.querySelector('#searchField');
+const dateFilter = document.querySelector("#dateFilter");
+const prioFilter = document.querySelector("#priorityFilter");
 
 class Task {
     constructor({title, priority, date, desc}) {
         this.id = id++;
         this.title = title;
         this.priority = priority;
-        this.date = date || "No Due Date";
+        this.date = date;
         this.description = desc || "Do the Task!"
         this.status = "todo";
     }
@@ -53,6 +55,7 @@ let state = {
     tasks: getStorageData(),
     modal: modal.classList.contains('show'),
     search: '',
+    filters: {date: null, priority: null}
 }
 let id = getLastId();
 
@@ -95,10 +98,42 @@ function showEmptyColumn(column) {
     }
 }
 
+function getCleanDateStr(date) {
+    if (!date) return "No Due Date";
+    return new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+}
+
+function filterDateWise(task) {
+    let today = new Date().setHours(0,0,0,0);
+    let tomorrow = today + 24 * 60 * 60 * 1000;
+    let filter = state.filters.date;
+
+    switch (filter) {
+        case 'overDue':  {
+            if (task.date == 0) return false;
+            return task.date < today;
+        }
+        case 'dueToday': return task.date === today;
+        case 'dueTomorrow': return task.date === tomorrow;
+        case 'upcoming': return task.date > tomorrow;
+        case 'noDate': return task.date === '';
+    }
+}
+
 function filterTasks(task) {
     let title = task.title.toLowerCase();
     let desc = task.description.toLowerCase();
-    return title.includes(state.search) || desc.includes(state.search);
+    let filteredTask = title.includes(state.search) || desc.includes(state.search);
+
+    if (state.filters.priority) {
+        filteredTask = filteredTask && task.priority === state.filters.priority;
+    }
+
+    if (state.filters.date) {
+        filteredTask = filteredTask && filterDateWise(task)
+    }
+    
+    return filteredTask;
 }
 
 function getTasks() {
@@ -132,6 +167,7 @@ function render() {
 
         let titleStr = task.title;
         let descStr = task.description
+        let dateStr = getCleanDateStr(task.date)
 
         if (state.search) {
             titleStr = showHighlight(titleStr);
@@ -142,7 +178,7 @@ function render() {
         desc.innerHTML = descStr;
         status.value = task.status;
         prio.textContent = task.priority;
-        date.textContent = task.date;
+        date.textContent = dateStr;
 
         const priorityClass = {"Low":'prio-low', "Mid":'prio-mid', "High":'prio-high'}
         prio.classList.add(priorityClass[task.priority])
@@ -188,7 +224,8 @@ function getFormData() {
     let desc = descField.value;
 
     if (date) {
-        date = new Date(date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })
+        const [y, m, d] = date.split('-').map(Number);
+        date = new Date(y, m-1, d).setHours(0, 0, 0, 0);
     }
 
     return {
@@ -280,6 +317,16 @@ document.addEventListener('keydown', (e) => {
 searchBar.addEventListener('input', e => {
     let searchQuery = searchBar.value;
     state.search = searchQuery.toLowerCase()
+    render();
+})
+
+dateFilter.addEventListener('change', e => {
+    state.filters.date = dateFilter.value;
+    render();
+})
+
+prioFilter.addEventListener('change', e => {
+    state.filters.priority = prioFilter.value;
     render();
 })
 

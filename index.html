@@ -20,6 +20,26 @@
                 Search:
                 <input type="search" id="searchField">
             </label>
+            <label for="priorityFilter">
+                Priority:
+                <select name="priorityFilter" id="priorityFilter">
+                    <option value="" selected>All</option>
+                    <option value="High">High</option>
+                    <option value="Mid">Medium</option>
+                    <option value="Low">Low</option>
+                </select>
+            </label>
+            <label for="dateFilter">
+                Due Date:
+                <select name="dateFilter" id="dateFilter">
+                    <option value="" selected>All</option>
+                    <option value="overDue">Over Due</option>
+                    <option value="dueToday">Due Today</option>
+                    <option value="dueTomorrow">Due Tomorrow</option>
+                    <option value="upcoming">Upcoming</option>
+                    <option value="noDate">No Due Date</option>
+                </select>
+            </label>
         </search>
         <div class="tasks">
             <div class="column">
