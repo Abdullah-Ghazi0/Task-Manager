@@ -25,6 +25,13 @@ const modal = document.querySelector('.modal-overlay');
 const searchBar = document.querySelector('#searchField');
 const dateFilter = document.querySelector("#dateFilter");
 const prioFilter = document.querySelector("#priorityFilter");
+const sortFilter = document.querySelector('#sort');
+
+const priorityOrder = {
+    Low:  0,
+    Mid:  1,
+    High: 2
+}
 
 class Task {
     constructor({title, priority, date, desc}) {
@@ -55,7 +62,8 @@ let state = {
     tasks: getStorageData(),
     modal: modal.classList.contains('show'),
     search: '',
-    filters: {date: null, priority: null}
+    filters: {date: null, priority: null},
+    sortBy: '',
 }
 let id = getLastId();
 
@@ -110,13 +118,13 @@ function filterDateWise(task) {
 
     switch (filter) {
         case 'overDue':  {
-            if (task.date == 0) return false;
+            if (task.date === null) return false;
             return task.date < today;
         }
         case 'dueToday': return task.date === today;
         case 'dueTomorrow': return task.date === tomorrow;
         case 'upcoming': return task.date > tomorrow;
-        case 'noDate': return task.date === '';
+        case 'noDate': return task.date === null;
     }
 }
 
@@ -136,9 +144,32 @@ function filterTasks(task) {
     return filteredTask;
 }
 
+function sortTasks(t1, t2) {
+
+    switch (state.sortBy) {
+        case 'dueDateA': {
+            if (t1.date === null && t2.date === null) return 0;
+            if (t1.date === null) return 1;
+            if (t2.date === null) return -1;
+
+            return t1.date - t2.date;
+        } 
+        case 'dueDateD': {
+            if (t1.date === null && t2.date === null) return 0;
+            if (t1.date === null) return -1
+            if (t2.date === null) return 1;
+
+            return t2.date - t1.date;
+        }
+        case 'prioA': return priorityOrder[t1.priority] - priorityOrder[t2.priority];
+        case 'prioD': return priorityOrder[t2.priority] - priorityOrder[t1.priority];
+    }
+}
+
 function getTasks() {
     const currentTasks = state.tasks.filter(filterTasks);
-    return currentTasks;
+    const sortedTasks =  currentTasks.toSorted(sortTasks);
+    return sortedTasks;
 }
 
 function showHighlight(text) {
@@ -226,7 +257,7 @@ function getFormData() {
     if (date) {
         const [y, m, d] = date.split('-').map(Number);
         date = new Date(y, m-1, d).setHours(0, 0, 0, 0);
-    }
+    } else date = null;
 
     return {
         title: title,
@@ -327,6 +358,11 @@ dateFilter.addEventListener('change', e => {
 
 prioFilter.addEventListener('change', e => {
     state.filters.priority = prioFilter.value;
+    render();
+})
+
+sortFilter.addEventListener('change', e => {
+    state.sortBy = sortFilter.value;
     render();
 })
 
