@@ -10,8 +10,8 @@ const descField = document.querySelector("#description")
 const addBtn = document.querySelector("#addTask")
 
 const todo = document.querySelector("#todo");
-const inProgrss = document.querySelector("#doing");
-const completed = document.querySelector("#done");
+const inProgress = document.querySelector("#inProgress");
+const completed = document.querySelector("#completed");
 
 const todoCountBox = document.querySelector("#todoCount");
 const doingCountBox = document.querySelector("#doingCount");
@@ -33,6 +33,8 @@ const priorityOrder = {
     High: 2
 }
 
+const priorityClass = {"Low":'prio-low', "Mid":'prio-mid', "High":'prio-high'}
+
 class Task {
     constructor({title, priority, date, desc}) {
         this.id = id++;
@@ -44,11 +46,16 @@ class Task {
     }
 
     changeStatus(newStatus) {
+        let oldStatus = this.status; 
         this.status = newStatus;
+        changeTaskColumn(oldStatus, newStatus, this.id)
         updateStorage()
     }
 
     rmTask() {
+        const column = state.columns[this.status];
+        column.splice(column.indexOf(this.id), 1);
+
         const removedTask = state.tasks.splice(getIndex(this), 1);
         updateStorage()
     }
@@ -63,14 +70,36 @@ let state = {
     modal: modal.classList.contains('show'),
     search: '',
     filters: {date: null, priority: null},
-    sortBy: '',
+    sortBy: '', 
+    columns: {
+        todo: [],
+        inProgress: [],
+        completed: []
+
+    },
+    listLength: {todo: 10, inProgress: 10, completed: 10}
 }
+
+function changeTaskColumn(from, to, id) {
+    from = state.columns[from];
+    to = state.columns[to];
+
+    from.splice(from.indexOf(id), 1);
+    to.push(id);
+}
+
 let id = getLastId();
 
 function getStorageData() {
     let rawTasks = JSON.parse(localStorage.getItem('tasks'));
     if (!rawTasks) return []
     return rawTasks.map(data => Task.formJSON(data));
+}
+
+function createColumnList() {
+    for (const task of state.tasks) {
+        state.columns[task.status].push(task.id)
+    }
 }
 
 function getLastId() {
@@ -85,7 +114,7 @@ function getIndex(taskToFind) {
 
 function taskCounts(column, countBox) {
     if (column.children.length) {
-        countBox.textContent = `(${column.children.length})`
+        countBox.textContent = `(${state.columns[column.id].length})`
     } else {
         countBox.textContent = '';
     }
@@ -93,7 +122,7 @@ function taskCounts(column, countBox) {
 
 function checkEmptyColumns() {
     showEmptyColumn(todo);
-    showEmptyColumn(inProgrss);
+    showEmptyColumn(inProgress);
     showEmptyColumn(completed);
 }
 
@@ -178,16 +207,36 @@ function showHighlight(text) {
     return text.replace(regex, `<span class="highlighted">$&</span>`)
 }
 
-function render() {
-    todo.innerHTML = '';
-    inProgrss.innerHTML = '';
-    completed.innerHTML = '';
+function createLoadBtn(column) {
+    const loadBtn = document.createElement('button');
+    loadBtn.classList.add('loadMore');
+    loadBtn.textContent = "Load More";
 
-    const taskToRender = getTasks();
+    loadBtn.addEventListener('click', e => {
+        state.listLength[column.id] += 10;
+        render();
+    })
+    column.appendChild(loadBtn);
+}
 
-    taskToRender.forEach(task => {
+function addLoadMore() {
+    if (state.columns.todo.length > state.listLength.todo) createLoadBtn(todo);
+    if (state.columns.inProgress.length > state.listLength.inProgress) createLoadBtn(inProgress);
+    if (state.columns.completed.length > state.listLength.completed) createLoadBtn(completed);
+}
 
-        const clone = template.content.cloneNode("true")
+function addCardToColumn(task, clone) {
+    if (task.status === 'todo' && todo.children.length < state.listLength.todo) {
+        todo.appendChild(clone);
+    } else if (task.status === 'inProgress' && inProgress.children.length < state.listLength.inProgress) {
+        inProgress.appendChild(clone);
+    } else if (task.status === 'completed' && completed.children.length < state.listLength.completed) {
+        completed.appendChild(clone);
+    }
+}
+
+function createTaskCard(task) {
+    const clone = template.content.cloneNode("true")
 
         const title =  clone.querySelector('h3');
         const desc = clone.querySelector('p');
@@ -197,8 +246,8 @@ function render() {
         const date = clone.querySelector('span');
 
         let titleStr = task.title;
-        let descStr = task.description
-        let dateStr = getCleanDateStr(task.date)
+        let descStr = task.description;
+        let dateStr = getCleanDateStr(task.date);
 
         if (state.search) {
             titleStr = showHighlight(titleStr);
@@ -211,10 +260,9 @@ function render() {
         prio.textContent = task.priority;
         date.textContent = dateStr;
 
-        const priorityClass = {"Low":'prio-low', "Mid":'prio-mid', "High":'prio-high'}
-        prio.classList.add(priorityClass[task.priority])
+        prio.classList.add(priorityClass[task.priority]);
         
-        status.addEventListener("change", (e)=> {
+        status.addEventListener("change", e => {
             task.changeStatus(e.target.value);
             render();
         })
@@ -224,28 +272,36 @@ function render() {
             render();
         })
 
-        if (task.status === 'todo') {
-            todo.appendChild(clone);
-        } else if (task.status === 'doing') {
-            inProgrss.appendChild(clone);
-        } else if (task.status === 'done') {
-            completed.appendChild(clone);
-        }
+        addCardToColumn(task, clone)
+}
+
+function render() {
+    todo.innerHTML = '';
+    inProgress.innerHTML = '';
+    completed.innerHTML = '';
+
+    const taskToRender = getTasks();
+
+    taskToRender.forEach(task => {
+
+        createTaskCard(task);
     })
 
     taskCounts(todo, todoCountBox);
-    taskCounts(inProgrss, doingCountBox);
+    taskCounts(inProgress, doingCountBox);
     taskCounts(completed, doneCountBox);
+
+    addLoadMore();
 
     checkEmptyColumns()
 }
 
 function resetForm() {
     titleField.value = '';
-    addBtn.classList.add('disabled')
+    addBtn.classList.add('disabled');
     priorityField.value = 'Low';
-    dateField.value = ''
-    descField.value = ''
+    dateField.value = '';
+    descField.value = '';
 }
 
 function getFormData() {
@@ -275,7 +331,9 @@ function updateStorage() {
 function createNewTask() {
 
     const newTask = new Task(getFormData());
+
     state.tasks.push(newTask);
+    state.columns.todo.push(newTask.id);
     updateStorage();
     render();
     toggleModal();
@@ -366,4 +424,5 @@ sortFilter.addEventListener('change', e => {
     render();
 })
 
+createColumnList()
 render();

@@ -58,11 +58,11 @@
             </div>
             <div class="column">
                 <h2>In-progress <span id="doingCount"></span></h2>
-                <div id="doing" class="taskList empty">No tasks yet</div>
+                <div id="inProgress" class="taskList empty">No tasks yet</div>
             </div>
             <div class="column">
                 <h2>Completed <span id="doneCount"></span></h2>
-                <div id="done" class="taskList empty">No tasks yet</div>
+                <div id="completed" class="taskList empty">No tasks yet</div>
             </div>
         </div>
     </div>
@@ -110,8 +110,8 @@
             <div class="card-action">
                 <select name="status" id="status" class="card-status">
                     <option value="todo">Todo</option>
-                    <option value="doing">In-progress</option>
-                    <option value="done">Completed</option>
+                    <option value="inProgress">In-progress</option>
+                    <option value="completed">Completed</option>
                 </select>
                 <button class="card-delete">🗑</button>
             </div>
