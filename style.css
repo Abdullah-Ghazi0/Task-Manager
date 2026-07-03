@@ -362,6 +362,7 @@ header {
 
 .card {
     background-color: #f8fafc;
+    min-height: 156px;
     padding: 16px;
     border-radius: 16px;
     display: flex;
@@ -370,6 +371,68 @@ header {
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     border: 1px solid #e2e8f0;
     gap: 4px;
+}
+
+.card-confirm {
+    display: none;
+    flex-direction: column;
+    align-content: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px;
+    height: 100%;
+}
+.card.confirmation .card-normal {
+    display: none;
+}
+.card.confirmation .card-confirm {
+    display: flex;
+}
+
+.card-confirm p {
+    font-size: 14px;
+    font-weight: 500;
+    color: #1e293b;
+    text-align: center;
+}
+
+.del-btns {
+    display: flex;
+    gap: 12px;
+}
+
+.cancel-del {
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+    background: #f1f5f9;
+    color: #475569;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.cancel-del:hover {
+    background: #e2e8f0;
+}
+
+.confirm-del {
+    padding: 6px 16px;
+    border-radius: 8px;
+    border: 1px solid #fca5a5;
+    background: #fee2e2;
+    color: #dc2626;
+    font-size: 13px;
+    font-family: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.confirm-del:hover {
+    background: #dc2626;
+    color: white;
 }
 
 .card-title {

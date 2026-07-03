@@ -245,6 +245,10 @@ function createTaskCard(task) {
         const prio = clone.querySelector('.prio');
         const date = clone.querySelector('span');
 
+        const card = clone.querySelector('.card');
+        const cancel = clone.querySelector('.cancel-del')
+        const confDel = clone.querySelector('.confirm-del')
+
         let titleStr = task.title;
         let descStr = task.description;
         let dateStr = getCleanDateStr(task.date);
@@ -267,12 +271,14 @@ function createTaskCard(task) {
             render();
         })
 
-        rm.addEventListener("click", ()=> {
+        rm.addEventListener("click", () => card.classList.add('confirmation'))
+        cancel.addEventListener("click", () => card.classList.remove('confirmation'))
+        confDel.addEventListener("click", () => {
             task.rmTask();
             render();
         })
 
-        addCardToColumn(task, clone)
+        addCardToColumn(task, clone);
 }
 
 function render() {
