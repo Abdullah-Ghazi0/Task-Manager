@@ -16,40 +16,43 @@
             <button id="newTaskBtn">Add New Task</button>
         </div>
         <search class="search-bar">
-            <label for="searchField">
-                Search:
-                <input type="search" id="searchField">
-            </label>
-            <label for="priorityFilter">
-                Priority:
+            <div class="control-group search-group">
+                <label for="searchField">Search</label>
+                <div class="search-wrap">
+                    <span class="search-icon">🔍</span>
+                    <input type="search" id="searchField" placeholder="Search tasks..">
+                </div>
+            </div>
+            <div class="control-group">
+                <label for="priorityFilter">Priority</label>
                 <select name="priorityFilter" id="priorityFilter">
                     <option value="" selected>All</option>
                     <option value="High">High</option>
                     <option value="Mid">Medium</option>
                     <option value="Low">Low</option>
                 </select>
-            </label>
-            <label for="dateFilter">
-                Due Date:
+            </div>
+            <div class="control-group">
+                <label for="dateFilter">Due Date</label>
                 <select name="dateFilter" id="dateFilter">
                     <option value="" selected>All</option>
-                    <option value="overDue">Over Due</option>
+                    <option value="overDue">Overdue</option>
                     <option value="dueToday">Due Today</option>
                     <option value="dueTomorrow">Due Tomorrow</option>
-                    <option value="upcoming">Upcoming</option>
+                    <option value="upcoming">Later</option>
                     <option value="noDate">No Due Date</option>
                 </select>
-            </label>
-            <label for="sort">
-                Sort By: 
+            </div>
+            <div class="control-group">
+                <label for="sort">Sort By</label>
                 <select name="sort" id="sort">
-                    <option value="">Created</option>
-                    <option value="dueDateA">Due Date Acend</option>
-                    <option value="dueDateD">Due Date Decend</option>
-                    <option value="prioA">Priority Acend</option>
-                    <option value="prioD">Prioritry Decend</option>
+                    <option value="">Date Created</option>
+                    <option value="dueDateA">Due Date (Earliest)</option>
+                    <option value="dueDateD">Due Date (Latest)</option>
+                    <option value="prioA">Priority (Low → High)</option>
+                    <option value="prioD">Priority (High → Low)</option>
                 </select>
-            </label>
+            </div>
         </search>
         <div class="tasks">
             <div class="column">
