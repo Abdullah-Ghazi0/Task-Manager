@@ -464,3 +464,26 @@ header {
 .highlighted {
     background-color: yellow;
 }
+
+.loadMore {
+    width: 100%;
+    padding: 8px;
+    border: 1px dashed rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    background: transparent;
+    color: #475569;
+    font-size: 13px;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 150ms ease;
+}
+
+.loadMore:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+    color: #1e293b;
+    border-color: rgba(0, 0, 0, 0.3);
+}
+
+.loadMore:active {
+    scale: 0.98;
+} 
