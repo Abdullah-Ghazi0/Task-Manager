@@ -531,6 +531,11 @@ header {
     scale: 0.92;
 }
 
+.created-at {
+    font-size: 13px;
+    color: #293331;
+}
+
 .highlighted {
     background-color: yellow;
 }

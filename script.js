@@ -42,15 +42,16 @@ class Task {
         this.id = id++;
         this.title = title;
         this.priority = priority;
-        this.date = date;
+        this.dueDate = date;
         this.description = desc || "Do the Task!"
         this.status = "todo";
+        this.createdAt = Date.now();
     }
 
     editTask({title, priority, date, desc}) {
         this.title = title;
         this.priority = priority;
-        this.date = date;
+        this.dueDate = date;
         this.description = desc || "No Description";
         updateStorage();
     }
@@ -159,13 +160,13 @@ function filterDateWise(task) {
 
     switch (filter) {
         case 'overDue':  {
-            if (task.date === null) return false;
-            return task.date < today;
+            if (task.dueDate === null) return false;
+            return task.dueDate < today;
         }
-        case 'dueToday': return task.date === today;
-        case 'dueTomorrow': return task.date === tomorrow;
-        case 'upcoming': return task.date > tomorrow;
-        case 'noDate': return task.date === null;
+        case 'dueToday': return task.dueDate === today;
+        case 'dueTomorrow': return task.dueDate === tomorrow;
+        case 'upcoming': return task.dueDate > tomorrow;
+        case 'noDate': return task.dueDate === null;
     }
 }
 
@@ -189,21 +190,22 @@ function sortTasks(t1, t2) {
 
     switch (state.sortBy) {
         case 'dueDateA': {
-            if (t1.date === null && t2.date === null) return 0;
-            if (t1.date === null) return 1;
-            if (t2.date === null) return -1;
+            if (t1.dueDate === null && t2.dueDate === null) return 0;
+            if (t1.dueDate === null) return 1;
+            if (t2.dueDate === null) return -1;
 
-            return t1.date - t2.date;
+            return t1.dueDate - t2.dueDate;
         } 
         case 'dueDateD': {
-            if (t1.date === null && t2.date === null) return 0;
-            if (t1.date === null) return -1
-            if (t2.date === null) return 1;
+            if (t1.dueDate === null && t2.dueDate === null) return 0;
+            if (t1.dueDate === null) return -1
+            if (t2.dueDate === null) return 1;
 
-            return t2.date - t1.date;
+            return t2.dueDate - t1.dueDate;
         }
         case 'prioA': return priorityOrder[t1.priority] - priorityOrder[t2.priority];
         case 'prioD': return priorityOrder[t2.priority] - priorityOrder[t1.priority];
+        case 'created': return t1.createdAt - t2.createdAt;
     }
 }
 
@@ -257,6 +259,7 @@ function createTaskCard(task) {
         const edit = clone.querySelector('.card-edit');
         const prio = clone.querySelector('.prio');
         const date = clone.querySelector('span');
+        const created = clone.querySelector('.created-at')
 
         const card = clone.querySelector('.card');
         const cancel = clone.querySelector('.cancel-del')
@@ -264,7 +267,8 @@ function createTaskCard(task) {
 
         let titleStr = task.title;
         let descStr = task.description;
-        let dateStr = getCleanDateStr(task.date);
+        let dateStr = getCleanDateStr(task.dueDate);
+        let createdDate = getCleanDateStr(task.createdAt);
 
         if (state.search) {
             titleStr = showHighlight(titleStr);
@@ -275,6 +279,7 @@ function createTaskCard(task) {
         desc.innerHTML = descStr;
         status.value = task.status;
         prio.textContent = task.priority;
+        created.textContent = createdDate;
         date.textContent = dateStr;
 
         prio.classList.add(priorityClass[task.priority]);
@@ -399,7 +404,7 @@ function editForm(task) {
     titleField.value = task.title;
     descField.value = task.description === 'No Description' ? '' : task.description;
     priorityField.value = task.priority;
-    dateField.value = getNumberDate(task.date);
+    dateField.value = getNumberDate(task.dueDate);
 
     addBtn.classList.remove('disabled');
 
