@@ -258,7 +258,7 @@ function createTaskCard(task) {
         const rm = clone.querySelector('.card-delete');
         const edit = clone.querySelector('.card-edit');
         const prio = clone.querySelector('.prio');
-        const date = clone.querySelector('span');
+        const date = clone.querySelector('.card-date');
         const created = clone.querySelector('.created-at')
 
         const card = clone.querySelector('.card');
@@ -279,7 +279,7 @@ function createTaskCard(task) {
         desc.innerHTML = descStr;
         status.value = task.status;
         prio.textContent = task.priority;
-        created.textContent = createdDate;
+        created.textContent = `Created : ${createdDate}`;
         date.textContent = dateStr;
 
         prio.classList.add(priorityClass[task.priority]);
@@ -300,6 +300,17 @@ function createTaskCard(task) {
         confDel.addEventListener("click", () => {
             task.rmTask();
             render();
+        })
+
+        card.addEventListener('click', e => {
+            if (e.target.closest('button')) return;
+            if (e.target.closest('select')) return;
+            
+            const previousExpanded = document.querySelector('.expanded');
+            if (previousExpanded) previousExpanded.classList.remove('expanded');
+                
+            if (previousExpanded !== card) card.classList.add('expanded');
+                
         })
 
         addCardToColumn(task, clone);
@@ -412,7 +423,7 @@ function editForm(task) {
 }
 
 function saveEditChanges() {
-    const index = getIndex(state.taskEditingId);
+
     const newData = getFormData();
     state.taskEditing.editTask(newData);
     state.taskEditing = null;
@@ -465,6 +476,15 @@ window.addEventListener('keydown', e => {
     }
     else {
         createNewTask();
+    }
+})
+
+window.addEventListener('click', e => {
+    if (!e.target.closest('.card')) {
+        const expandedCard = document.querySelector('.expanded');
+        if (expandedCard) {
+            expandedCard.classList.remove("expanded");
+        }
     }
 })
 

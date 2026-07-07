@@ -135,6 +135,9 @@ header {
     background: rgba(255,255,255,0.2);;
     border-radius: 16px;
     padding: 12px;
+
+    min-width: 0;
+    overflow: hidden;
 }
 
 .column h2 {
@@ -152,9 +155,14 @@ header {
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    height: 100%;
     padding: 4px 18px;
     overflow-y: auto;
+    min-width: 0;
+    overflow-x: clip;
+
+    flex: 1;
+    height: 0;
+    min-height: 0;
 
     scrollbar-width: thin;                        
     scrollbar-color: rgba(0,0,0,0.2) transparent; 
@@ -362,15 +370,27 @@ header {
 
 .card {
     background-color: #f8fafc;
-    min-height: 156px;
     padding: 16px;
     border-radius: 16px;
     display: flex;
     flex-direction: column;
+    width: 100%;
+    min-width: 0;
+
+    min-height: 156px;
+    max-height: 156px;
+    height: auto;
+    flex-shrink: 0;
+
 
     box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
     border: 1px solid #e2e8f0;
     gap: 4px;
+
+    cursor: pointer;
+    transition: box-shadow 200ms ease, border-color 200ms ease;
+    transition: max-height 0.5s ease-in-out;
+    overflow: hidden;
 }
 
 .card-confirm {
@@ -382,6 +402,12 @@ header {
     padding: 8px;
     height: 100%;
 }
+
+.card-normal {
+    min-width: 0;
+    width: 100%;
+}
+
 .card.confirmation .card-normal {
     display: none;
 }
@@ -435,10 +461,38 @@ header {
     color: white;
 }
 
+.card-head {
+    min-width: 0;
+    width: 100%;
+}
+
+.card-head-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+}
+
+.expand-icon {
+    font-size: 16px;
+    color: #000000;
+    transition: transform 150ms ease;
+    flex-shrink: 0;
+}
+
+.card.expanded .expand-icon {
+    transform: rotate(-180deg);
+}
+
 .card-title {
     font-size: 18px;
     color: #0f172a;
     font-weight: 600;
+    max-width: 100%;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .prio {
@@ -465,9 +519,14 @@ header {
 
 .card-desc {
     font-size: 15px;
-    color: #3c4f6b;
+    color: #31425c;
     padding: 4px;
     margin: 4px 0 8px;
+    max-width: 100%;
+
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .card-details {
@@ -502,7 +561,7 @@ header {
 
 .card-date {
     font-size: 14px;
-    color: #94a3b8;
+    color: #657992;
 }
 
 .card-edit,
@@ -532,8 +591,28 @@ header {
 }
 
 .created-at {
+    display: none;
     font-size: 13px;
-    color: #293331;
+    color: #94a3b8;
+    padding: 8px 0;
+}
+
+.card.expanded {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+    border-left: 3px solid #3c8377;
+    max-height: 750px;
+}
+
+.card.expanded .created-at {
+    display: block;
+}
+
+.card.expanded .card-title,
+.card.expanded .card-desc {
+    white-space: normal;
+    text-overflow: unset;
+    word-break: break-word;
+    overflow: visible;
 }
 
 .highlighted {
@@ -561,4 +640,6 @@ header {
 
 .loadMore:active {
     scale: 0.98;
-} 
+}
+
+
