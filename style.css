@@ -12,7 +12,7 @@ body {
 header {
     height: 65px;
     background: #293331;
-    margin-bottom: 42px;
+    margin-bottom: 24px;
     color: rgb(255, 253, 240);
     text-align: center;
     line-height: 65px;
@@ -20,12 +20,16 @@ header {
 }
 
 .container {
+    display: flex;
+    flex-direction: column;
     background-color: #a1cfcc;
     margin: auto;
-    width: clamp(400px, 60vw, 1100px);
-    height: 85dvh;
+    width: clamp(400px, 100vw, 1100px);
+    height: 90dvh;
     border-radius: 24px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+    margin-bottom: 24px;
+    padding-bottom: 16px;
 }
 
 .input {
@@ -113,13 +117,15 @@ header {
 
 .tasks {
     width: 100%;
-    height: calc(100% - 100px);
+    flex: 1;
+    height: 0;
 
     display: flex;
     justify-content: space-evenly;
     gap: 16px;
     
-    padding: 16px 36px;
+    padding: 16px clamp(8px, 2vw, 36px);
+    padding-bottom: 0;
 }
 
 .column {
@@ -155,7 +161,7 @@ header {
     flex-direction: column;
     gap: 8px;
     width: 100%;
-    padding: 4px 18px;
+    padding: 4px clamp(4px, 1vw, 18px);
     overflow-y: auto;
     min-width: 0;
     overflow-x: clip;
@@ -642,4 +648,149 @@ header {
     scale: 0.98;
 }
 
+.fab {
+    display: none;
+}
+
+@media (max-width:768px) {
+    .container {
+        width: 100%;
+        height: calc(100dvh - 48px);
+        border-radius: 0;
+        margin: 0;
+        padding: 8px 0;
+    }
+
+    header {
+        height: 48px;
+        line-height: 48px;
+        margin-bottom: 0;
+    }
+
+    .searchLabel {
+        display: none;
+    }
+
+    .input {
+        display: none;
+    }
+
+    .search-bar {
+        flex-wrap: wrap;
+        padding: 8px 12px;
+        gap: 6px;
+        padding-top: 0;
+    }
+
+
+    .control-group {
+        flex: 1 1 60px;
+        min-width: 60px;
+    }
+    
+    .search-group {
+        flex: 1 1 100%;
+    }
+
+    .fab {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        width: 56px;
+        height: 56px;
+        border-radius: 50%;
+        background: #313847;
+        color: white;
+        font-size: 28px;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+        z-index: 10;
+        transition: all 200ms ease;
+    }
+
+    .fab:hover {
+        background: #1e293b;
+        scale: 1.05;
+    }
+    .fab:active {
+        scale: 0.95;
+    }
+
+    .tasks {
+        padding: 4px 8px;
+        /* gap: 0; */
+        overflow-x: scroll;
+        scroll-snap-type: x mandatory;
+        scroll-behavior: smooth;
+        scrollbar-width: none;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .tasks::-webkit-scrollbar {
+        display: none;
+    }
+
+    .column {
+        min-width: 75vw;
+        flex-shrink: 0;
+        scroll-snap-align: start;
+        border-radius: 16px;
+        padding-top: 8px;
+    }
+    .column h2 {
+        padding-bottom: 6px;
+        font-size: 23px;
+    }
+
+    .taskList {
+        padding: 4px 16px;
+    }
+
+    .modal-overlay {
+        align-items: start;
+    }
+
+    .modal {
+        margin-top: 36px;
+        width: 92vw;
+        height: auto;
+    }
+
+    .modal-form {
+        height: auto;
+        gap: 8px;
+        padding-bottom: 0;
+        margin-bottom: 0;
+    }
+
+    .modal-head {
+        font-size: 20px;
+        padding: 8px;
+        margin: 8px;
+    }
+
+    .fieldLabel {
+        font-size: 15px;
+    }
+
+    .inputField {
+        font-size: 14px;
+    }
+
+    .titleField {
+        width: 250px;
+    }
+
+    .descriptionField {
+        width: 200px;
+    }
+
+    .createBtn {
+        margin: 18px;
+    }
+}
 

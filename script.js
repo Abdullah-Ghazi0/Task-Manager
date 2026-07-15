@@ -1,6 +1,7 @@
 const container = document.querySelector(".container")
 
 const newTaskbtn = document.querySelector('#newTaskBtn')
+const fab = document.querySelector('.fab')
 
 const form = document.querySelector('form')
 const modalHead = document.querySelector('.modal-head')
@@ -504,6 +505,7 @@ form.addEventListener('submit', e => {
 closeBtn.addEventListener("click", toggleModal)
 
 newTaskbtn.addEventListener("click", toggleModal)
+fab.addEventListener('click', toggleModal)
 
 modal.addEventListener('click', (e)=> {
     if (e.target === modal) {
