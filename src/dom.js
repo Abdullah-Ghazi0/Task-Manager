@@ -29,3 +29,5 @@ export const searchBar = document.querySelector('#searchField');
 export const dateFilter = document.querySelector("#dateFilter");
 export const prioFilter = document.querySelector("#priorityFilter");
 export const sortFilter = document.querySelector('#sort');
+
+export const taskWindow = document.querySelector('.tasks')

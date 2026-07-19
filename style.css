@@ -652,6 +652,10 @@ header {
     display: none;
 }
 
+.no-select {
+    user-select: none;
+}
+
 @media (max-width:768px) {
     .container {
         width: 100%;

@@ -14,7 +14,13 @@ export const state = {
         completed: []
 
     },
-    listLength: {todo: 10, inProgress: 10, completed: 10}
+    listLength: {todo: 10, inProgress: 10, completed: 10},
+    drag: {
+        elem : null,
+        from: null,
+        posiX: null,
+        posiY: null,
+    }
 }
 
 export function changeTaskColumn(from, to, id) {

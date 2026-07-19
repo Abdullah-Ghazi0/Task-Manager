@@ -5,6 +5,11 @@ export function getIndex(taskToFind) {
     return index;
 }
 
+export function getTaskFromId(id) {
+    const taskIndex = getIndex(id);
+    return state.tasks[taskIndex]
+}
+
 export function returnFocus(elem) {
     requestAnimationFrame(() => {
         requestAnimationFrame(()=> {

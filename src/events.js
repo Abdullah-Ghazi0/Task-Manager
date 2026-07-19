@@ -1,8 +1,9 @@
-import { addBtn, titleField, form, closeBtn, newTaskbtn, fab, modal, dateFilter, searchBar, prioFilter, sortFilter } from "./dom.js";
+import { addBtn, titleField, form, closeBtn, newTaskbtn, fab, modal, dateFilter, searchBar, prioFilter, sortFilter, taskWindow } from "./dom.js";
 
 import { state } from "./state.js";
 import { render } from "./render.js";
 import { saveEditChanges, createNewTask, toggleModal } from "./modal.js";
+import { dragStart } from "./dragdrop.js";
 
 export function addEventListners() {
     addBtn.addEventListener('click', e => {
@@ -85,4 +86,6 @@ export function addEventListners() {
         state.sortBy = sortFilter.value;
         render();
     })
+
+    taskWindow.addEventListener('pointerdown', dragStart);
 }

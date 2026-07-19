@@ -107,10 +107,12 @@ function createTaskCard(task) {
     date.textContent = dateStr;
 
     prio.classList.add(priorityClass[task.priority]);
+    card.dataset.taskId = task.id;
 
-    addEventsToCard(task, card, status, edit, rm, cancel, confDel)
+    addEventsToCard(task, card, status, edit, rm, cancel, confDel);
         
     addCardToColumn(task, clone);
+    window.state = state;
 }
 
 function createLoadBtn(column) {
