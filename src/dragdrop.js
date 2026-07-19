@@ -13,7 +13,7 @@ export function dragStart(e) {
     state.drag.elem = card;
     state.drag.from = card.parentElement.id;
 
-    document.body.classList.add('no-select')
+    document.body.classList.add('no-select');
     document.addEventListener('pointermove', dragMove);
     document.addEventListener('pointerup', dragEnd);
 }
@@ -26,9 +26,10 @@ function dragMove(e) {
 function dragEnd(e) {
     document.removeEventListener('pointermove', dragMove);
     document.removeEventListener('pointerup', dragEnd);
-    document.body.classList.add('no-select')
-    
+    document.body.classList.remove('no-select');
+
     const newColumn = document.elementFromPoint(state.drag.posiX, state.drag.posiY);
+    if (!['todo', 'inProgress', 'completed'].includes(newColumn.id)) return;
     changeStatusOnDrag(newColumn);
 }
 

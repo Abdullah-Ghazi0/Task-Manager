@@ -112,7 +112,6 @@ function createTaskCard(task) {
     addEventsToCard(task, card, status, edit, rm, cancel, confDel);
         
     addCardToColumn(task, clone);
-    window.state = state;
 }
 
 function createLoadBtn(column) {

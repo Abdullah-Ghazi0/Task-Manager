@@ -5,6 +5,7 @@ import { addEventListners } from "./events.js";
 
 
 function initApp() {
+    window.state = state;
     state.tasks = getStorageData();
     createColumnList();
     render();

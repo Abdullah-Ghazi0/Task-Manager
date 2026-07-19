@@ -656,6 +656,14 @@ header {
     user-select: none;
 }
 
+.dragging {
+    cursor: grabbing;
+}
+
+.dragable {
+    touch-action: none;
+}
+
 @media (max-width:768px) {
     .container {
         width: 100%;
