@@ -16,10 +16,12 @@ export const state = {
     },
     listLength: {todo: 10, inProgress: 10, completed: 10},
     drag: {
+        dragging: false,
         elem : null,
+        virtual: null,
         from: null,
-        posiX: null,
-        posiY: null,
+        startX: null,
+        startY: null,
     }
 }
 

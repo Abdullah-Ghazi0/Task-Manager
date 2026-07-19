@@ -664,6 +664,19 @@ header {
     touch-action: none;
 }
 
+.dim-card {
+    opacity: 0.6;
+}
+
+.virtual-card {
+    position: fixed;
+    pointer-events: none;
+    cursor: grabbing;
+    z-index: 20;
+    opacity: 0.8;
+    width: 272px;
+}
+
 @media (max-width:768px) {
     .container {
         width: 100%;
