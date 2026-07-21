@@ -144,7 +144,10 @@ function addCardToColumn(task, clone) {
 
 function getTasks() {
     const currentTasks = state.tasks.filter(filterTasks);
-    const sortedTasks =  currentTasks.toSorted(sortTasks);
+    let sortedTasks;
+    if (state.sortBy !== 'custom') {
+        sortedTasks =  currentTasks.toSorted(sortTasks);
+    }
     return sortedTasks;
 }
 

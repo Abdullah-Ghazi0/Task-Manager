@@ -53,6 +53,7 @@ function dragEnd(e) {
         return;
     }
 
+    console.log(getDropPosition(newColumn, e.clientY))
     state.drag.virtual.remove();
     state.drag.elem.classList.remove('dim-card')
     changeStatusOnDrag(newColumn);
@@ -87,4 +88,27 @@ function resetDragState() {
     state.drag.from = null;
     state.drag.startX = null;
     state.drag.startY = null;
+}
+
+function getDropPosition(column, posiY, draggingCard) {
+    const columnCards = column.querySelectorAll('.card');
+
+    for (let card of columnCards) {
+        if (card == draggingCard) continue;
+
+        const rect = card.getBoundingClientRect();
+        const midpoint = (rect.top + rect.bottom) / 2;
+
+        if (posiY < midpoint) {
+            return Number(card.dataset.taskId)
+        }
+    }
+    return null
+}
+
+function changeCardPosition(dropBeforeCard) {
+    if (dropBeforeCard === null) {
+        
+    }
+    
 }
