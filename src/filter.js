@@ -73,3 +73,16 @@ export function filterTasks(task) {
     
     return filteredTask;
 }
+
+export function customSort(taskList) {
+    const sortedList = [];
+
+    for (const column of ["todo", "inProgress", "completed"]) {
+        for (const id of state.columns[column]) {
+            const foundTask = taskList.find(task => task.id === id)
+            if (foundTask) sortedList.push(foundTask)
+        }
+    }
+    
+    return sortedList;
+}

@@ -25,10 +25,15 @@ export const state = {
     }
 }
 
-export function changeTaskColumn(from, to, id) {
+export function changeTaskColumn(from, to, id, insertBefore = null) {
     from = state.columns[from];
     to = state.columns[to];
 
     from.splice(from.indexOf(id), 1);
-    to.push(id);
+    
+    if (insertBefore !== null) {
+        to.splice(to.indexOf(insertBefore), 0, id)
+    } else {
+        to.push(id);
+    }
 }

@@ -48,25 +48,25 @@ function dragEnd(e) {
         return;   
     }
 
-    if (!newColumn) {
-        resetDragState();
-        return;
+    if (newColumn) {
+        changeStatusOnDrag(newColumn, e.clientY);
     }
 
-    console.log(getDropPosition(newColumn, e.clientY))
     state.drag.virtual.remove();
     state.drag.elem.classList.remove('dim-card')
-    changeStatusOnDrag(newColumn);
+    resetDragState();
 }
 
-function changeStatusOnDrag(newColumn) {
+function changeStatusOnDrag(newColumn, cordsY) {
     const newStatus = newColumn.id;
     const draggingTaskId = Number(state.drag.elem.dataset.taskId)
 
     const task = getTaskFromId(draggingTaskId)
     task.changeStatus(newStatus)
-    changeTaskColumn(state.drag.from, newStatus, draggingTaskId);
-    resetDragState();
+
+    const insertBefore = getDropPosition(newColumn, cordsY)
+
+    changeTaskColumn(state.drag.from, newStatus, draggingTaskId, insertBefore);
     updateStorage();
     render();
 }
@@ -104,11 +104,4 @@ function getDropPosition(column, posiY, draggingCard) {
         }
     }
     return null
-}
-
-function changeCardPosition(dropBeforeCard) {
-    if (dropBeforeCard === null) {
-        
-    }
-    
 }

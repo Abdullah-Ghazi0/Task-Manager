@@ -4,7 +4,7 @@ import { state, changeTaskColumn } from "./state.js";
 import { updateStorage } from "./storage.js";
 import { editForm } from "./modal.js";
 import { getCleanDateStr } from "./utils.js";
-import { filterTasks, sortTasks, showHighlight } from "./filter.js";
+import { filterTasks, sortTasks, showHighlight, customSort } from "./filter.js";
 
 const priorityClass = {"Low":'prio-low', "Mid":'prio-mid', "High":'prio-high'}
 
@@ -145,8 +145,10 @@ function addCardToColumn(task, clone) {
 function getTasks() {
     const currentTasks = state.tasks.filter(filterTasks);
     let sortedTasks;
-    if (state.sortBy !== 'custom') {
+    if (state.sortBy !== '') {
         sortedTasks =  currentTasks.toSorted(sortTasks);
+    } else {
+        sortedTasks = customSort(currentTasks);
     }
     return sortedTasks;
 }
