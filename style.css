@@ -677,6 +677,55 @@ header {
     width: 272px;
 }
 
+.skeleton {
+    opacity: 0.85;
+    filter: saturate(.6);
+}
+
+.skeleton-top {
+    width: 100%;
+    /* padding: 4px; */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.skeleton-title {
+    height: 22px;
+    width: 90%;
+    background-color: #dedfe2;
+    border-radius: 8px;
+}
+
+.skeleton-desc {
+    height: 19px;
+    width: 60%;
+    background-color: #dedfe2;
+    border-radius: 8px;
+}
+
+.skeleton-badge {
+    height: 21px;
+    width: 45px;
+    background-color: #dedfe2;
+    border-radius: 8px;
+    margin: 4px 0;
+}
+
+.skeleton-date {
+    height: 21px;
+    width: 80px;
+    background-color: #dedfe2;
+    border-radius: 8px;
+}
+
+.skeleton-action {
+    height: 22px;
+    width: 50%;
+    background-color: #dedfe2;
+    border-radius: 8px;
+}
+
 @media (max-width:768px) {
     .container {
         width: 100%;

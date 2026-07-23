@@ -3,6 +3,8 @@ import { getTaskFromId } from "./utils.js";
 import { render } from "./render.js";
 import { updateStorage } from "./storage.js";
 
+import { inProgress } from "./dom.js";
+
 export function dragStart(e) {
     if (e.target.closest('button')) return;
     if (e.target.closest('select')) return;
@@ -19,6 +21,7 @@ export function dragStart(e) {
     document.body.classList.add('no-select');
     document.addEventListener('pointermove', dragMove);
     document.addEventListener('pointerup', dragEnd);
+    createSkeletonCard()
 }
 
 function dragMove(e) {
@@ -64,7 +67,7 @@ function changeStatusOnDrag(newColumn, cordsY) {
     const task = getTaskFromId(draggingTaskId)
     task.changeStatus(newStatus)
 
-    const insertBefore = getDropPosition(newColumn, cordsY)
+    const insertBefore = getDropPosition(newColumn, cordsY, state.drag.elem)
 
     changeTaskColumn(state.drag.from, newStatus, draggingTaskId, insertBefore);
     updateStorage();
@@ -103,5 +106,38 @@ function getDropPosition(column, posiY, draggingCard) {
             return Number(card.dataset.taskId)
         }
     }
-    return null
+    return null;
+}
+
+function createSkeletonCard() {
+    const skeleton = document.createElement('div');
+    skeleton.classList.add('card', 'skeleton');
+
+    const skeletonHead = document.createElement('div')
+    const skeletonDetails = document.createElement('div')
+    const skeletonAction = document.createElement('div')
+
+    skeletonHead.classList.add('skeleton-top')
+    skeletonDetails.classList.add('card-details')
+    skeletonAction.classList.add('card-action')
+
+    const skeletonTitle = document.createElement('span')
+    const skeletonDesc = document.createElement('span')
+    skeletonTitle.classList.add('skeleton-title')
+    skeletonDesc.classList.add('skeleton-desc')
+
+    const skeletonBadge = document.createElement('span')
+    const skeletonDate = document.createElement('span')
+    skeletonBadge.classList.add('skeleton-badge')
+    skeletonDate.classList.add('skeleton-date')
+
+    const skeletonBtn = document.createElement('span')
+    skeletonBtn.classList.add('skeleton-action')
+
+    skeletonAction.append(skeletonBtn)
+    skeletonDetails.append(skeletonBadge, skeletonDate)
+    skeletonHead.append(skeletonTitle, skeletonDesc)
+    skeleton.append(skeletonHead, skeletonDetails, skeletonAction)
+    
+    inProgress.append(skeleton)
 }
