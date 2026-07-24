@@ -1,7 +1,7 @@
 import { template, todo, inProgress, completed, todoCountBox, doingCountBox, doneCountBox } from "./dom.js";
 
 import { state, changeTaskColumn } from "./state.js";
-import { updateStorage } from "./storage.js";
+import { updateStorage, loadCustomOrder } from "./storage.js";
 import { editForm } from "./modal.js";
 import { getCleanDateStr } from "./utils.js";
 import { filterTasks, sortTasks, showHighlight, customSort } from "./filter.js";
@@ -177,7 +177,13 @@ function showEmptyColumn(column) {
 }
 
 export function createColumnList() {
-    for (const task of state.tasks) {
-        state.columns[task.status].push(task.id)
+    const order = loadCustomOrder()
+
+    if (order !== null) {
+        state.columns = order;
+    } else {
+        for (const task of state.tasks) {
+            state.columns[task.status].push(task.id)
+        }
     }
 }

@@ -24,3 +24,14 @@ export function updateStorage() {
     localStorage.setItem('tasks', taskStr)
 }
 
+export function storeCustomOrder() {
+    const order = JSON.stringify(state.columns);
+    localStorage.setItem('order', order);
+}
+
+export function loadCustomOrder() {
+    const savedOrder = JSON.parse(localStorage.getItem('order'));
+    if (!savedOrder) return null;
+    return savedOrder;
+}
+

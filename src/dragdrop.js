@@ -1,7 +1,7 @@
 import { state, changeTaskColumn } from "./state.js";
 import { getTaskFromId } from "./utils.js";
 import { render } from "./render.js";
-import { updateStorage } from "./storage.js";
+import { storeCustomOrder, updateStorage } from "./storage.js";
 
 import { inProgress } from "./dom.js";
 
@@ -70,6 +70,7 @@ function changeStatusOnDrag(newColumn, cordsY) {
     const insertBefore = getDropPosition(newColumn, cordsY, state.drag.elem)
 
     changeTaskColumn(state.drag.from, newStatus, draggingTaskId, insertBefore);
+    storeCustomOrder();
     updateStorage();
     render();
 }
