@@ -11,8 +11,7 @@ export const state = {
     columns: {
         todo: [],
         inProgress: [],
-        completed: []
-
+        completed: [],
     },
     listLength: {todo: 10, inProgress: 10, completed: 10},
     drag: {
@@ -22,6 +21,8 @@ export const state = {
         from: null,
         startX: null,
         startY: null,
+        offsetX: null,
+        offsetY: null,
     }
 }
 

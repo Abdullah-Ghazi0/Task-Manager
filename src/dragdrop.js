@@ -15,13 +15,16 @@ export function dragStart(e) {
     card.setPointerCapture(e.pointerId);
     state.drag.elem = card;
     state.drag.from = card.parentElement.id;
+
+    const rect = card.getBoundingClientRect()
     state.drag.startX = e.clientX;
     state.drag.startY = e.clientY;
+    state.drag.offsetX = e.clientX - rect.left;
+    state.drag.offsetY = e.clientY - rect.top;
 
     document.body.classList.add('no-select');
     document.addEventListener('pointermove', dragMove);
     document.addEventListener('pointerup', dragEnd);
-    createSkeletonCard()
 }
 
 function dragMove(e) {
@@ -33,8 +36,9 @@ function dragMove(e) {
         initDragging();
     }
     
-    state.drag.virtual.style.left = `${e.clientX}px`;
-    state.drag.virtual.style.top = `${e.clientY}px`;
+    state.drag.virtual.style.left = `${e.clientX - state.drag.offsetX}px`;
+    state.drag.virtual.style.top = `${e.clientY - state.drag.offsetY}px`;
+    showPlaceholder(e.clientX, e.clientY)
 }
 
 function dragEnd(e) {
@@ -43,9 +47,8 @@ function dragEnd(e) {
 
     document.body.classList.remove('no-select');
 
-    const elem = document.elementFromPoint(e.clientX, e.clientY);
-    const newColumn = elem?.closest('.taskList');
-
+    const newColumn = getCurrentColumn(e.clientX, e.clientY);
+    removePlaceholder();
     if (!state.drag.dragging) {
         resetDragState();
         return;   
@@ -77,7 +80,7 @@ function changeStatusOnDrag(newColumn, cordsY) {
 
 function initDragging() {
     state.drag.dragging = true;
-    state.drag.elem.classList.add('dim-card')
+    state.drag.elem.classList.add('dim-card', 'dragging')
     
     state.drag.virtual = state.drag.elem.cloneNode(true);
     state.drag.virtual.classList.add('virtual-card')
@@ -92,6 +95,8 @@ function resetDragState() {
     state.drag.from = null;
     state.drag.startX = null;
     state.drag.startY = null;
+    state.drag.offsetX = null;
+    state.drag.offsetY = null;
 }
 
 function getDropPosition(column, posiY, draggingCard) {
@@ -108,6 +113,11 @@ function getDropPosition(column, posiY, draggingCard) {
         }
     }
     return null;
+}
+
+function getCurrentColumn(xPosi, yPosi) {
+    const elem = document.elementFromPoint(xPosi, yPosi);
+    return elem?.closest('.taskList');
 }
 
 function createSkeletonCard() {
@@ -140,5 +150,30 @@ function createSkeletonCard() {
     skeletonHead.append(skeletonTitle, skeletonDesc)
     skeleton.append(skeletonHead, skeletonDetails, skeletonAction)
     
-    inProgress.append(skeleton)
+    return skeleton;
+}
+
+function removePlaceholder() {
+    const oldSkeleton = document.querySelector('.skeleton')
+    if (oldSkeleton) {
+        oldSkeleton.remove()
+    } 
+}
+
+function showPlaceholder(xPosi, yPosi) {
+    removePlaceholder();
+    const onColumn = getCurrentColumn(xPosi, yPosi);
+    if (!onColumn) return;
+
+    const taskId = getDropPosition(onColumn, yPosi, state.drag.elem)
+    const insertBefore = document.querySelector(`[data-task-id="${taskId}"]`)
+    
+    const placeholder = createSkeletonCard()
+    if (insertBefore) {
+        if (insertBefore.previousElementSibling == state.drag.elem) return;
+        insertBefore.before(placeholder);
+    }else {
+        if (onColumn.lastElementChild == state.drag.elem) return;
+        onColumn.append(placeholder)
+    }
 }

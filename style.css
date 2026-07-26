@@ -672,6 +672,7 @@ header {
     position: fixed;
     pointer-events: none;
     cursor: grabbing;
+    scale: 1.03;
     z-index: 20;
     opacity: 0.8;
     width: 272px;
