@@ -12,7 +12,7 @@ export function dragStart(e) {
     const card = e.target.closest('.card')
     if (!card) return
 
-    card.setPointerCapture(e.pointerId);
+    // card.setPointerCapture(e.pointerId);
     state.drag.elem = card;
     state.drag.from = card.parentElement.id;
 
@@ -25,6 +25,7 @@ export function dragStart(e) {
     document.body.classList.add('no-select');
     document.addEventListener('pointermove', dragMove);
     document.addEventListener('pointerup', dragEnd);
+    document.addEventListener('pointercancel', dragEnd);
 }
 
 function dragMove(e) {
@@ -44,6 +45,7 @@ function dragMove(e) {
 function dragEnd(e) {
     document.removeEventListener('pointermove', dragMove);
     document.removeEventListener('pointerup', dragEnd);
+    document.removeEventListener('pointercancel', dragEnd);
 
     document.body.classList.remove('no-select');
 
@@ -58,8 +60,8 @@ function dragEnd(e) {
         changeStatusOnDrag(newColumn, e.clientY);
     }
 
-    state.drag.virtual.remove();
-    state.drag.elem.classList.remove('dim-card')
+    state.drag.virtual?.remove();
+    state.drag.elem.classList.remove('dim-card', 'dragging');
     resetDragState();
 }
 
@@ -166,10 +168,12 @@ function showPlaceholder(xPosi, yPosi) {
     if (!onColumn) return;
 
     const taskId = getDropPosition(onColumn, yPosi, state.drag.elem)
-    const insertBefore = document.querySelector(`[data-task-id="${taskId}"]`)
+    const insertBefore = onColumn.querySelector(`[data-task-id="${taskId}"]`)
     
     const placeholder = createSkeletonCard()
-    if (insertBefore) {
+    if (onColumn.classList.contains('empty')) {
+        onColumn.prepend(placeholder)
+    } else if (insertBefore) {
         if (insertBefore.previousElementSibling == state.drag.elem) return;
         insertBefore.before(placeholder);
     }else {

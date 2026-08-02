@@ -11,6 +11,7 @@ Kanban Task Manager app where users can create and remove task and move them bet
 - User can search Task
 - Each Task is shown in repective column
 - User can change task status to move it between columns
+- User can have Reoder task in each column
 
 ## Tech Stack
 

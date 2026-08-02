@@ -169,11 +169,18 @@ function checkEmptyColumns() {
 
 function showEmptyColumn(column) {
     if (column.children.length <= 0) {
-        column.classList.add('empty');
-        column.textContent = 'No tasks yet'
+        addEmptyMsg(column);
     } else {
         column.classList.remove('empty');
     }
+}
+
+function addEmptyMsg(column) {
+        column.classList.add('empty');
+        const emptyMsg = document.createElement('span');
+        emptyMsg.textContent = 'No tasks yet';
+        emptyMsg.classList.add('empty-msg')
+        column.appendChild(emptyMsg)
 }
 
 export function createColumnList() {
