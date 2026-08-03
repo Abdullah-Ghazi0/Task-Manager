@@ -1,7 +1,7 @@
 import { template, todo, inProgress, completed, todoCountBox, doingCountBox, doneCountBox } from "./dom.js";
 
 import { state, changeTaskColumn } from "./state.js";
-import { updateStorage, loadCustomOrder } from "./storage.js";
+import { updateStorage, loadCustomOrder, storeCustomOrder } from "./storage.js";
 import { editForm } from "./modal.js";
 import { getCleanDateStr } from "./utils.js";
 import { filterTasks, sortTasks, showHighlight, customSort } from "./filter.js";
@@ -56,6 +56,7 @@ function addEventsToCard(task, card, status, edit, rm, cancel, confDel) {
         let oldStatus = task.status;
         task.changeStatus(e.target.value);
         changeTaskColumn(oldStatus, e.target.value, task.id);
+        storeCustomOrder();
         updateStorage();
         render();
     })

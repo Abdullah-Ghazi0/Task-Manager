@@ -1,5 +1,5 @@
 import { state, changeTaskColumn } from "./state.js";
-import { getTaskFromId } from "./utils.js";
+import { getTaskFromId, showToast } from "./utils.js";
 import { render } from "./render.js";
 import { storeCustomOrder, updateStorage } from "./storage.js";
 
@@ -70,11 +70,22 @@ function changeStatusOnDrag(newColumn, cordsY) {
     const draggingTaskId = Number(state.drag.elem.dataset.taskId)
 
     const task = getTaskFromId(draggingTaskId)
+    const oldStatus = task.status;
     task.changeStatus(newStatus)
 
     const insertBefore = getDropPosition(newColumn, cordsY, state.drag.elem)
-
-    changeTaskColumn(state.drag.from, newStatus, draggingTaskId, insertBefore);
+    if (state.sortBy !== '') {
+        if (oldStatus === newStatus) {
+            showToast('Order can be changed in Sort by: Custom')
+            return;
+        }
+            
+        changeTaskColumn(state.drag.from, newStatus, draggingTaskId);
+        showToast('Status changed, order can be changed in Sort by: Custom')
+    } else {
+        changeTaskColumn(state.drag.from, newStatus, draggingTaskId, insertBefore);
+    }
+    
     storeCustomOrder();
     updateStorage();
     render();

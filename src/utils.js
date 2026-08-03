@@ -1,4 +1,5 @@
 import { state } from "./state.js";
+import { toastBox } from "./dom.js";
 
 export function getIndex(taskToFind) {
     const index = state.tasks.findIndex(task => task.id === taskToFind);
@@ -34,4 +35,23 @@ export function getNumberDate(ms) {
         return `${y}-${m}-${d}`;
     }
     return null;
+}
+
+export function showToast(message) {
+    const toast = document.createElement('div')
+    toast.textContent = message;
+    toast.classList.add('toast')
+
+    toastBox.append(toast)
+
+    requestAnimationFrame(() => {
+        toast.classList.add('show')
+    })
+
+    setTimeout(() => {
+        toast.classList.remove('show')
+        setTimeout(() => {
+            toast.remove();
+        }, 300)
+    }, 2500)
 }
