@@ -15,6 +15,7 @@ export const state = {
     },
     listLength: {todo: 10, inProgress: 10, completed: 10},
     drag: {
+        gesture: null,
         dragging: false,
         elem : null,
         virtual: null,

@@ -12,7 +12,9 @@ export function dragStart(e) {
     const card = e.target.closest('.card')
     if (!card) return
 
-    // card.setPointerCapture(e.pointerId);
+    if (e.pointerType === 'touch') {
+        gestureManager();
+    }
     state.drag.elem = card;
     state.drag.from = card.parentElement.id;
 
@@ -99,6 +101,10 @@ function initDragging() {
     state.drag.virtual.classList.add('virtual-card')
 
     document.body.append(state.drag.virtual);
+}
+
+function gestureManager() {
+    console.log('Mobile');
 }
 
 function resetDragState() {
