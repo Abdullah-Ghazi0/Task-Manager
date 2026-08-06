@@ -13,7 +13,8 @@ export function dragStart(e) {
     if (!card) return
 
     if (e.pointerType === 'touch') {
-        gestureManager();
+        document.addEventListener('touchmove', touchMoveHandler, { passive: false });
+        touchManager();
     }
     state.drag.elem = card;
     state.drag.from = card.parentElement.id;
@@ -36,6 +37,10 @@ function dragMove(e) {
 
     if (!state.drag.dragging) {
         if (Math.hypot(dx, dy) < 8) return;
+        if (!state.drag.ready) {
+            clearTimeout(state.drag.timer)
+            return;
+        }
         initDragging();
     }
     
@@ -48,6 +53,7 @@ function dragEnd(e) {
     document.removeEventListener('pointermove', dragMove);
     document.removeEventListener('pointerup', dragEnd);
     document.removeEventListener('pointercancel', dragEnd);
+    document.removeEventListener('touchmove', touchMoveHandler);
 
     document.body.classList.remove('no-select');
 
@@ -64,6 +70,7 @@ function dragEnd(e) {
 
     state.drag.virtual?.remove();
     state.drag.elem.classList.remove('dim-card', 'dragging');
+    state.drag.elem.style.touchAction = '';
     resetDragState();
 }
 
@@ -95,6 +102,8 @@ function changeStatusOnDrag(newColumn, cordsY) {
 
 function initDragging() {
     state.drag.dragging = true;
+
+    state.drag.elem.style.touchAction = 'none';
     state.drag.elem.classList.add('dim-card', 'dragging')
     
     state.drag.virtual = state.drag.elem.cloneNode(true);
@@ -103,8 +112,11 @@ function initDragging() {
     document.body.append(state.drag.virtual);
 }
 
-function gestureManager() {
-    console.log('Mobile');
+function touchManager() {
+    state.drag.ready = false;
+    state.drag.timer = setTimeout(() => {
+        state.drag.ready = true;
+    }, 320)
 }
 
 function resetDragState() {
@@ -196,5 +208,11 @@ function showPlaceholder(xPosi, yPosi) {
     }else {
         if (onColumn.lastElementChild == state.drag.elem) return;
         onColumn.append(placeholder)
+    }
+}
+
+function touchMoveHandler(e) {
+    if (state.drag.dragging) {
+        e.preventDefault();
     }
 }

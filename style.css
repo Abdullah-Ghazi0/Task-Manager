@@ -396,6 +396,7 @@ header {
     cursor: pointer;
     transition: box-shadow 200ms ease, border-color 200ms ease, max-height 0.5s ease-in-out;
     overflow: hidden;
+    touch-action: pan-y;
 }
 
 .card-confirm {
@@ -657,10 +658,6 @@ header {
 
 .dragging {
     cursor: grabbing;
-}
-
-.dragable {
-    touch-action: none;
 }
 
 .dim-card {
