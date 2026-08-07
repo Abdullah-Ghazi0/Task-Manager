@@ -4,6 +4,7 @@ import { state } from "./state.js";
 import { render } from "./render.js";
 import { saveEditChanges, createNewTask, toggleModal } from "./modal.js";
 import { dragStart } from "./dragdrop.js";
+import { manageTouch } from "./touch.js";
 
 export function addEventListners() {
     addBtn.addEventListener('click', e => {
@@ -88,4 +89,6 @@ export function addEventListners() {
     })
 
     taskWindow.addEventListener('pointerdown', dragStart);
+
+    taskWindow.addEventListener('touchstart', manageTouch)
 }
