@@ -120,6 +120,10 @@ header {
     flex: 1;
     height: 0;
 
+}
+
+.track {
+    height: 100%;
     display: flex;
     justify-content: space-evenly;
     gap: 16px;
@@ -826,13 +830,7 @@ header {
     }
 
     .tasks {
-        padding: 4px 8px;
-        /* gap: 0; */
-        overflow-x: scroll;
-        scroll-snap-type: x mandatory;
-        scroll-behavior: smooth;
-        scrollbar-width: none;
-        -webkit-overflow-scrolling: touch;
+        overflow-x: hidden;
     }
 
     .tasks::-webkit-scrollbar {
