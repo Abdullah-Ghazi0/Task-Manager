@@ -130,8 +130,10 @@ header {
     
     padding: 16px clamp(8px, 2vw, 36px);
     padding-bottom: 0;
+}
 
-    transition: transform 250ms ease;
+.trans {
+    transition: transform 200ms ease;
 }
 
 .column {
