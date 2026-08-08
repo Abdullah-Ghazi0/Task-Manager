@@ -1,12 +1,15 @@
 import { taskWindow, track } from "./dom.js";
 
-let index = 0;
 const touchState = {
+    index: 0,
     startX: null,
     startY: null,
+    cachedStep: 0,
+    cachedMax:  0,
 }
 
 export function manageTouch(e) {
+    if (e.touches.length > 1) return;
     const touch = e.touches[0];
     if (e.target.closest('.card')) return;
     
@@ -15,6 +18,8 @@ export function manageTouch(e) {
 
     touchState.startX = touch.clientX;
     touchState.startY = touch.clientY;
+    touchState.cachedStep = getStep();
+    touchState.cachedMax = getMax();
 }
 
 function moveTouch(e) {
@@ -28,18 +33,22 @@ function moveTouch(e) {
 function swipeManager(e) {
     const touch = e.changedTouches[0];
     const x = touchState.startX - touch.clientX;
+    const threshold = getStep() * 0.25;
 
     if (checkVirtical(touch)) return;
 
     track.classList.add('trans')
-    if (x > 12 && index < 2) {
-        index++;
+    if (x > threshold && touchState.index < 2) {
+        touchState.index++;
         swipe();
-    } else if (x < -12 && index > 0) {
-        index--;
+    } else if (x < -threshold && touchState.index > 0) {
+        touchState.index--;
+        swipe();
+    } else {
         swipe();
     }
     track.addEventListener('transitionend', transRemove, {once: true})
+    cleanUp();
 }
 
 function transRemove() {
@@ -60,6 +69,14 @@ function checkVirtical(touch) {
     }
 }
 
+function cleanUp() {
+    touchState.startX = null;
+    touchState.startY = null;
+
+    document.removeEventListener('touchend', swipeManager)
+    document.removeEventListener('touchmove', moveTouch)
+}
+
 function getStep() {
     const cols = taskWindow.querySelectorAll('.column')
     return cols[1].getBoundingClientRect().left - cols[0].getBoundingClientRect().left;
@@ -71,10 +88,10 @@ function getMax() {
 }
 
 function getTranslateLength() {
-    const step = getStep();
-    const max = getMax()
+    const step = touchState.cachedStep || getStep();
+    const max = touchState.cachedMax || getMax();
 
-    return Math.min(index * step , max)
+    return Math.min(touchState.index * step , max)
 }
 
 function swipe() {
@@ -84,7 +101,7 @@ function swipe() {
 
 function slideTrack(x) {
     const oldLength = getTranslateLength();
-    if (x > 0 && index === 2) return;
+    if (x > 0 && touchState.index === 2) return;
     track.style.transform = `translateX(-${oldLength + x}px)`;
 }
 
