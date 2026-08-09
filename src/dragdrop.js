@@ -2,6 +2,7 @@ import { state, changeTaskColumn } from "./state.js";
 import { getTaskFromId, showToast } from "./utils.js";
 import { render } from "./render.js";
 import { storeCustomOrder, updateStorage } from "./storage.js";
+import { touchCleanUp } from "./touch.js";
 
 import { inProgress } from "./dom.js";
 
@@ -116,6 +117,7 @@ function touchManager() {
     state.drag.ready = false;
     state.drag.timer = setTimeout(() => {
         state.drag.ready = true;
+        touchCleanUp();
     }, 320)
 }
 

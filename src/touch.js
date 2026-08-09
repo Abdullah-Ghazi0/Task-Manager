@@ -11,7 +11,7 @@ const touchState = {
 export function manageTouch(e) {
     if (e.touches.length > 1) return;
     const touch = e.touches[0];
-    if (e.target.closest('.card')) return;
+    // if (e.target.closest('.card')) return;
     
     document.addEventListener('touchend', swipeManager)
     document.addEventListener('touchmove', moveTouch)
@@ -20,6 +20,14 @@ export function manageTouch(e) {
     touchState.startY = touch.clientY;
     touchState.cachedStep = getStep();
     touchState.cachedMax = getMax();
+}
+
+export function touchCleanUp() {
+    touchState.startX = null;
+    touchState.startY = null;
+
+    document.removeEventListener('touchend', swipeManager)
+    document.removeEventListener('touchmove', moveTouch)
 }
 
 function moveTouch(e) {
@@ -48,7 +56,7 @@ function swipeManager(e) {
         swipe();
     }
     track.addEventListener('transitionend', transRemove, {once: true})
-    cleanUp();
+    touchCleanUp();
 }
 
 function transRemove() {
@@ -67,14 +75,6 @@ function checkVirtical(touch) {
     } else {
         return false;
     }
-}
-
-function cleanUp() {
-    touchState.startX = null;
-    touchState.startY = null;
-
-    document.removeEventListener('touchend', swipeManager)
-    document.removeEventListener('touchmove', moveTouch)
 }
 
 function getStep() {
