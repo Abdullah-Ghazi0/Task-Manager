@@ -25,6 +25,9 @@ export const state = {
         startY: null,
         offsetX: null,
         offsetY: null,
+        width: 0,
+        swipeTimer: null,
+        currentX: null,
     }
 }
 

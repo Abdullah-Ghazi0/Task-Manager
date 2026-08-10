@@ -30,6 +30,16 @@ export function touchCleanUp() {
     document.removeEventListener('touchmove', moveTouch)
 }
 
+export function swipeLeft() {
+    touchState.index--;
+    swipe();
+}
+
+export function swipeRight() {
+    touchState.index++;
+    swipe();
+}
+
 function moveTouch(e) {
     const touch = e.touches[0];
     const move = touchState.startX - touch.clientX;
@@ -45,17 +55,14 @@ function swipeManager(e) {
 
     if (checkVirtical(touch)) return;
 
-    track.classList.add('trans')
+    
     if (x > threshold && touchState.index < 2) {
-        touchState.index++;
-        swipe();
+        swipeRight();
     } else if (x < -threshold && touchState.index > 0) {
-        touchState.index--;
-        swipe();
+        swipeLeft();
     } else {
         swipe();
     }
-    track.addEventListener('transitionend', transRemove, {once: true})
     touchCleanUp();
 }
 
@@ -95,8 +102,10 @@ function getTranslateLength() {
 }
 
 function swipe() {
+    track.classList.add('trans')
     const x = getTranslateLength()
     track.style.transform = `translateX(-${x}px)`;
+    track.addEventListener('transitionend', transRemove, {once: true})
 }
 
 function slideTrack(x) {

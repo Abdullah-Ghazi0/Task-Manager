@@ -2,7 +2,7 @@ import { state, changeTaskColumn } from "./state.js";
 import { getTaskFromId, showToast } from "./utils.js";
 import { render } from "./render.js";
 import { storeCustomOrder, updateStorage } from "./storage.js";
-import { touchCleanUp } from "./touch.js";
+import { touchCleanUp, swipeLeft, swipeRight } from "./touch.js";
 
 import { inProgress } from "./dom.js";
 
@@ -25,6 +25,7 @@ export function dragStart(e) {
     state.drag.startY = e.clientY;
     state.drag.offsetX = e.clientX - rect.left;
     state.drag.offsetY = e.clientY - rect.top;
+    state.drag.width = window.innerWidth;
 
     document.body.classList.add('no-select');
     document.addEventListener('pointermove', dragMove);
@@ -45,6 +46,12 @@ function dragMove(e) {
         initDragging();
     }
     
+    autoSwipeHandler(e.clientX)
+
+    if (state.drag.swipeTimer) {
+        state.drag.currentX = e.clientX;
+    }
+
     state.drag.virtual.style.left = `${e.clientX - state.drag.offsetX}px`;
     state.drag.virtual.style.top = `${e.clientY - state.drag.offsetY}px`;
     showPlaceholder(e.clientX, e.clientY)
@@ -217,4 +224,34 @@ function touchMoveHandler(e) {
     if (state.drag.dragging) {
         e.preventDefault();
     }
+}
+
+function autoSwipeHandler(x) {
+    if (state.drag.swipeTimer) return;
+
+    const totalWidth = state.drag.width;
+    const leftLimit = totalWidth * 0.15;
+    const rightLimit = totalWidth - leftLimit;
+
+    if (x < leftLimit || x > rightLimit) {
+        state.drag.swipeTimer = setTimeout(autoSwipe, 500)
+    }
+}
+
+function autoSwipe() {
+    const totalWidth = state.drag.width;
+    const leftLimit = totalWidth * 0.15;
+    const rightLimit = totalWidth - leftLimit;
+
+    if (state.drag.currentX < leftLimit) {
+        swipeLeft()
+    } else if (state.drag.currentX > rightLimit) {
+        swipeRight()
+    }
+    swipeCleanUp();
+}
+
+function swipeCleanUp() {
+    state.drag.swipeTimer = null;
+    state.drag.currentX = null;
 }
