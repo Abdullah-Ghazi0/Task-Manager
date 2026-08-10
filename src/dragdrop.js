@@ -48,10 +48,6 @@ function dragMove(e) {
     
     autoSwipeHandler(e.clientX)
 
-    if (state.drag.swipeTimer) {
-        state.drag.currentX = e.clientX;
-    }
-
     state.drag.virtual.style.left = `${e.clientX - state.drag.offsetX}px`;
     state.drag.virtual.style.top = `${e.clientY - state.drag.offsetY}px`;
     showPlaceholder(e.clientX, e.clientY)
@@ -129,6 +125,10 @@ function touchManager() {
 }
 
 function resetDragState() {
+    if (state.drag.swipeTimer) {
+        clearTimeout(state.drag.swipeTimer)
+    }
+
     state.drag.dragging = false;
     state.drag.elem  = null;
     state.drag.virtual = null;
@@ -137,6 +137,8 @@ function resetDragState() {
     state.drag.startY = null;
     state.drag.offsetX = null;
     state.drag.offsetY = null;
+    state.drag.swipeTimer = null;
+    state.drag.currentX = null;
 }
 
 function getDropPosition(column, posiY, draggingCard) {
@@ -227,14 +229,17 @@ function touchMoveHandler(e) {
 }
 
 function autoSwipeHandler(x) {
-    if (state.drag.swipeTimer) return;
+    state.drag.currentX = x;
 
+    if (state.drag.swipeTimer) return;
+    
     const totalWidth = state.drag.width;
     const leftLimit = totalWidth * 0.15;
     const rightLimit = totalWidth - leftLimit;
 
     if (x < leftLimit || x > rightLimit) {
-        state.drag.swipeTimer = setTimeout(autoSwipe, 500)
+        
+        state.drag.swipeTimer = setTimeout(autoSwipe, 600)
     }
 }
 

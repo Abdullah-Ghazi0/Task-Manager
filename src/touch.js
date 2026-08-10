@@ -31,11 +31,13 @@ export function touchCleanUp() {
 }
 
 export function swipeLeft() {
+    if (touchState.index <= 0) return;
     touchState.index--;
     swipe();
 }
 
 export function swipeRight() {
+    if (touchState.index >= 2) return;
     touchState.index++;
     swipe();
 }
@@ -97,7 +99,7 @@ function getMax() {
 function getTranslateLength() {
     const step = touchState.cachedStep || getStep();
     const max = touchState.cachedMax || getMax();
-
+    console.log(Math.min(touchState.index * step , max))
     return Math.min(touchState.index * step , max)
 }
 
