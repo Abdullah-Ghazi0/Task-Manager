@@ -139,6 +139,8 @@ function resetDragState() {
     state.drag.offsetY = null;
     state.drag.swipeTimer = null;
     state.drag.currentX = null;
+    state.drag.scroll = false;
+    state.drag.scrollColumn = null;
 }
 
 function getDropPosition(column, posiY, draggingCard) {
@@ -207,6 +209,7 @@ function showPlaceholder(xPosi, yPosi) {
     const onColumn = getCurrentColumn(xPosi, yPosi);
     if (!onColumn) return;
 
+    autoScrollHandler(onColumn, yPosi)
     const taskId = getDropPosition(onColumn, yPosi, state.drag.elem)
     const insertBefore = onColumn.querySelector(`[data-task-id="${taskId}"]`)
     
@@ -220,7 +223,6 @@ function showPlaceholder(xPosi, yPosi) {
         if (onColumn.lastElementChild == state.drag.elem) return;
         onColumn.append(placeholder)
     }
-    autoScrollHandler(onColumn, yPosi)
 }
 
 function touchMoveHandler(e) {
@@ -268,10 +270,14 @@ function autoScrollHandler(column, y) {
     if (y > lowerLimit && y < colBottom) {
         state.drag.scrollColumn = column;
         state.drag.scroll = true;
+
+        if (state.drag.scrollFrame) return;
         scrollDown()
     } else if (y < upperLimit && y > colTop) {
         state.drag.scrollColumn = column;
         state.drag.scroll = true;
+
+        if (state.drag.scrollFrame) return;
         scrollUp()
     } else {
         state.drag.scroll = false;
@@ -294,17 +300,19 @@ function getColumnRect(column) {
 }
 
 function scrollDown() {
-    if (state.drag.scroll === false) return;
-    state.drag.scrollColumn.scrollTop += 0.75;
-    requestAnimationFrame(scrollDown)
+    if (state.drag.scroll === false) {
+        state.drag.scrollFrame = null;
+        return;
+    }
+    state.drag.scrollColumn.scrollTop += 5;
+    state.drag.scrollFrame = requestAnimationFrame(scrollDown);
 }
 
 function scrollUp() {
-    if (state.drag.scroll === false) return;
-    state.drag.scrollColumn.scrollTop -= 0.75;
-    requestAnimationFrame(scrollUp)
+    if (state.drag.scroll === false) {
+        state.drag.scrollFrame = null;
+        return;
+    }
+    state.drag.scrollColumn.scrollTop -= 5;
+    state.drag.scrollFrame = requestAnimationFrame(scrollUp);
 }
-
-
-
-

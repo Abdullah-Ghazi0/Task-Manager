@@ -30,6 +30,7 @@ export const state = {
         currentX: null,
         scrollColumn: null,
         scroll: false,
+        scrollFrame: null,
     }
 }
 
