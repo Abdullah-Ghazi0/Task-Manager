@@ -24,7 +24,7 @@ export function render() {
     taskCounts(inProgress, doingCountBox);
     taskCounts(completed, doneCountBox);
 
-    addLoadMore();
+    addLoadMore(taskToRender);
 
     checkEmptyColumns();
 }
@@ -127,10 +127,11 @@ function createLoadBtn(column) {
     column.appendChild(loadBtn);
 }
 
-function addLoadMore() {
-    if (state.columns.todo.length > state.listLength.todo) createLoadBtn(todo);
-    if (state.columns.inProgress.length > state.listLength.inProgress) createLoadBtn(inProgress);
-    if (state.columns.completed.length > state.listLength.completed) createLoadBtn(completed);
+function addLoadMore(tasks) {
+    const {todoLen, inprogressLenn, completedLen } = getColumnLength(tasks)
+    if (todoLen > state.listLength.todo) createLoadBtn(todo);
+    if (inProgress > state.listLength.inProgress) createLoadBtn(inProgress);
+    if (completedLen > state.listLength.completed) createLoadBtn(completed);
 }
 
 function addCardToColumn(task, clone) {
@@ -193,5 +194,27 @@ export function createColumnList() {
         for (const task of state.tasks) {
             state.columns[task.status].push(task.id)
         }
+    }
+}
+
+function getColumnLength(tasks) {
+    let todoLen = 0;
+    let inprogressLen = 0;
+    let completedLen = 0;
+    for (const task of tasks) {
+        switch (task.status) {
+            case 'todo':
+                todoLen += 1;
+                break;
+            case 'inProgress':
+                inprogressLen += 1;
+                break;
+            case 'completed':
+                completedLen += 1
+                break;
+        }
+    }
+    return {
+        todoLen, inprogressLen, completedLen
     }
 }
