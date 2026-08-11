@@ -11,7 +11,6 @@ const touchState = {
 export function manageTouch(e) {
     if (e.touches.length > 1) return;
     const touch = e.touches[0];
-    // if (e.target.closest('.card')) return;
     
     document.addEventListener('touchend', swipeManager)
     document.addEventListener('touchmove', moveTouch)
@@ -99,7 +98,7 @@ function getMax() {
 function getTranslateLength() {
     const step = touchState.cachedStep || getStep();
     const max = touchState.cachedMax || getMax();
-    console.log(Math.min(touchState.index * step , max))
+
     return Math.min(touchState.index * step , max)
 }
 

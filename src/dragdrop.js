@@ -220,6 +220,7 @@ function showPlaceholder(xPosi, yPosi) {
         if (onColumn.lastElementChild == state.drag.elem) return;
         onColumn.append(placeholder)
     }
+    autoScrollHandler(onColumn, yPosi)
 }
 
 function touchMoveHandler(e) {
@@ -260,3 +261,50 @@ function swipeCleanUp() {
     state.drag.swipeTimer = null;
     state.drag.currentX = null;
 }
+
+function autoScrollHandler(column, y) {
+    const {colTop, colBottom, upperLimit, lowerLimit} = getColumnRect(column);
+    
+    if (y > lowerLimit && y < colBottom) {
+        state.drag.scrollColumn = column;
+        state.drag.scroll = true;
+        scrollDown()
+    } else if (y < upperLimit && y > colTop) {
+        state.drag.scrollColumn = column;
+        state.drag.scroll = true;
+        scrollUp()
+    } else {
+        state.drag.scroll = false;
+    }
+
+}
+
+function getColumnRect(column) {
+    const col = column.getBoundingClientRect();
+    const colLimit = col.height * 0.15;
+    const colTop = col.top;
+    const colBottom = col.bottom;
+    return {
+        colTop : colTop,
+        colBottom : colBottom,
+        upperLimit : colTop + colLimit,
+        lowerLimit : colBottom - colLimit,
+    }
+
+}
+
+function scrollDown() {
+    if (state.drag.scroll === false) return;
+    state.drag.scrollColumn.scrollTop += 0.75;
+    requestAnimationFrame(scrollDown)
+}
+
+function scrollUp() {
+    if (state.drag.scroll === false) return;
+    state.drag.scrollColumn.scrollTop -= 0.75;
+    requestAnimationFrame(scrollUp)
+}
+
+
+
+

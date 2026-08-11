@@ -28,6 +28,8 @@ export const state = {
         width: 0,
         swipeTimer: null,
         currentX: null,
+        scrollColumn: null,
+        scroll: false,
     }
 }
 
