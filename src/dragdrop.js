@@ -212,7 +212,8 @@ function showPlaceholder(xPosi, yPosi) {
     autoScrollHandler(onColumn, yPosi)
     const taskId = getDropPosition(onColumn, yPosi, state.drag.elem)
     const insertBefore = onColumn.querySelector(`[data-task-id="${taskId}"]`)
-    
+    loadMoreOnDrag(onColumn, insertBefore);
+
     const placeholder = createSkeletonCard()
     if (onColumn.classList.contains('empty')) {
         onColumn.prepend(placeholder)
@@ -222,6 +223,15 @@ function showPlaceholder(xPosi, yPosi) {
     }else {
         if (onColumn.lastElementChild == state.drag.elem) return;
         onColumn.append(placeholder)
+    }
+}
+
+function loadMoreOnDrag(column, insertBefore) {
+    const haveMore = column.lastElementChild.classList.contains('loadMore');
+    // const onLoadBtn = insertBefore.classList.contains('loadMore');
+    if (!insertBefore && haveMore) {
+        state.listLength[column.id] += 10;
+        render();
     }
 }
 
