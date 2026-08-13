@@ -12,4 +12,5 @@ function initApp() {
 }
 
 initApp();
+lucide.createIcons();
 

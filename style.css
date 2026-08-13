@@ -115,6 +115,10 @@ header {
     box-shadow: 0 2px 8px rgba(0,0,0,0.1);
 }
 
+.search-wrap span {
+    margin-bottom: -3px;
+}
+
 .tasks {
     width: 100%;
     flex: 1;
@@ -299,26 +303,28 @@ header {
 }
 
 .createBtn {
-    background: #3195ad;
+    background: #313847;
     color: white;
     border: none;
-    padding: 8px;
-    border-radius: 8px;
-
+    padding: 10px 24px;
+    border-radius: 10px;
+    font-weight: 500;
+    font-family: inherit;
     margin: 24px;
 
     font-size: 18px;
     transform: scale(1);
     transition: transform 100ms ease;
+    cursor: pointer;
 }
 
 .createBtn:hover {
-    background-color: #369eb8;
+    background-color: #1e293b;
 }
 
 .createBtn:active {
     transform: scale(0.95);
-    background-color: #2b869c;
+    background-color: #1e293b;
 }
 
 .disabled {
@@ -583,7 +589,8 @@ header {
     background: transparent;
     border: 1px solid #e2e8f0;
     border-radius: 8px;
-    padding: 4px 8px;
+    padding: 4px 6px;
+    padding-bottom: 3px;
     cursor: pointer;
     font-size: 14px;
     transition: all 150ms ease;
@@ -628,6 +635,21 @@ header {
     word-break: break-word;
     overflow: visible;
 }
+
+.card-edit svg,
+.card-delete svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5;
+    color: #5a5b5c;
+}
+
+.search-icon svg {
+    width: 15px;
+    height: 15px;
+    stroke-width: 1.5;
+}
+
 
 .highlighted {
     background-color: yellow;

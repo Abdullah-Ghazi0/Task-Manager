@@ -27,6 +27,7 @@ export function render() {
     addLoadMore(taskToRender);
 
     checkEmptyColumns();
+    lucide.createIcons();
 }
 
 function getClone() {

@@ -228,7 +228,6 @@ function showPlaceholder(xPosi, yPosi) {
 
 function loadMoreOnDrag(column, insertBefore) {
     const haveMore = column.lastElementChild.classList.contains('loadMore');
-    // const onLoadBtn = insertBefore.classList.contains('loadMore');
     if (!insertBefore && haveMore) {
         state.listLength[column.id] += 10;
         render();

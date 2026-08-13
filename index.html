@@ -20,7 +20,7 @@
             <div class="control-group search-group">
                 <label for="searchField" class="searchLabel">Search</label>
                 <div class="search-wrap">
-                    <span class="search-icon">🔍</span>
+                    <span class="search-icon"><i data-lucide="search"></i></span>
                     <input type="search" id="searchField" placeholder="Search tasks..">
                 </div>
             </div>
@@ -125,8 +125,8 @@
                         <option value="inProgress">In-progress</option>
                         <option value="completed">Completed</option>
                     </select>
-                    <button class="card-edit">🖊</button>
-                    <button class="card-delete">🗑</button>
+                    <button class="card-edit"><i data-lucide="pencil"></i></button>
+                    <button class="card-delete"><i data-lucide="trash-2"></i></button>
                 </div>
             </div>
             <div class="card-confirm">
@@ -139,6 +139,7 @@
         </div>
     </template>
     <button class="fab" id="fabBtn">+</button>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
     <script type="module" src="./src/main.js" defer></script>
 </body>
 </html>
