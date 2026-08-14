@@ -14,9 +14,20 @@ header {
     background: #293331;
     margin-bottom: 24px;
     color: rgb(255, 253, 240);
-    text-align: center;
     line-height: 65px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+    padding-left: clamp(16px, 8vw, 128px);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+img {
+    margin-bottom: -4px;
+    width: clamp(40px, 8vw, 50px);
 }
 
 .container {
@@ -814,9 +825,11 @@ select.inputField {
     }
 
     header {
-        height: 48px;
-        line-height: 48px;
+        height: 54px;
+        line-height: 54px;
         margin-bottom: 0;
+        padding-left: 16px;
+        font-size: 15px;
     }
 
     .searchLabel {
