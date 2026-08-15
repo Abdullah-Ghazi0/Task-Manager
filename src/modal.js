@@ -3,7 +3,7 @@ import { modal, addBtn, titleField, priorityField, dateField, descField, modalBo
 import { Task } from "./task.js";
 import { state } from "./state.js";
 import { returnFocus, getNumberDate, trackEvent } from "./utils.js";
-import { updateStorage } from "./storage.js";
+import { updateStorage, storeCustomOrder } from "./storage.js";
 import { render } from "./render.js"
 
 export function toggleModal() {
@@ -53,6 +53,7 @@ export function createNewTask() {
     state.tasks.push(newTask);
     state.columns.todo.push(newTask.id);
     updateStorage();
+    storeCustomOrder();
     render();
     toggleModal();
     resetForm();
