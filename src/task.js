@@ -1,6 +1,6 @@
 import { state } from "./state.js";
 import { getNewId } from "./storage.js";
-import { getIndex } from "./utils.js";
+import { getIndex, trackEvent } from "./utils.js";
 
 
 export class Task {
@@ -30,6 +30,7 @@ export class Task {
         column.splice(column.indexOf(this.id), 1);
 
         state.tasks.splice(getIndex(this.id), 1);
+        trackEvent('task_deleted');
     }
 
     static formJSON(data) {

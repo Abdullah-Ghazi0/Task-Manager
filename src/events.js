@@ -5,6 +5,7 @@ import { render } from "./render.js";
 import { saveEditChanges, createNewTask, toggleModal } from "./modal.js";
 import { dragStart } from "./dragdrop.js";
 import { manageTouch } from "./touch.js";
+import { trackEvent } from "./utils.js";
 
 export function addEventListners() {
     addBtn.addEventListener('click', e => {
@@ -69,23 +70,26 @@ export function addEventListners() {
 
     searchBar.addEventListener('input', e => {
         let searchQuery = searchBar.value;
-        state.search = searchQuery.toLowerCase()
+        state.search = searchQuery.toLowerCase();
         render();
     })
 
     dateFilter.addEventListener('change', e => {
         state.filters.date = dateFilter.value;
         render();
+        trackEvent('filter_used', { type: 'date' });
     })
 
     prioFilter.addEventListener('change', e => {
         state.filters.priority = prioFilter.value;
         render();
+        trackEvent('filter_used', { type: 'prority' });
     })
 
     sortFilter.addEventListener('change', e => {
         state.sortBy = sortFilter.value;
         render();
+        trackEvent('filter_used', { type: 'sort' });
     })
 
     taskWindow.addEventListener('pointerdown', dragStart);

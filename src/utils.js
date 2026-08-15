@@ -55,3 +55,9 @@ export function showToast(message) {
         }, 300)
     }, 2500)
 }
+
+export function trackEvent(name, props = {}) {
+    if (typeof posthog !== 'undefined') {
+        posthog.capture(name, props);
+    }
+}

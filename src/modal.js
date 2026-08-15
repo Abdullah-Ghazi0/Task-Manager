@@ -2,7 +2,7 @@ import { modal, addBtn, titleField, priorityField, dateField, descField, modalBo
 
 import { Task } from "./task.js";
 import { state } from "./state.js";
-import { returnFocus, getNumberDate } from "./utils.js";
+import { returnFocus, getNumberDate, trackEvent } from "./utils.js";
 import { updateStorage } from "./storage.js";
 import { render } from "./render.js"
 
@@ -56,6 +56,7 @@ export function createNewTask() {
     render();
     toggleModal();
     resetForm();
+    trackEvent('task_created', {priority : newTask.priority});
 }
 
 function resetModal() {
