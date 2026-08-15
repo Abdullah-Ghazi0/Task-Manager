@@ -14,9 +14,12 @@ header {
     background: #293331;
     margin-bottom: 24px;
     color: rgb(255, 253, 240);
-    line-height: 65px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
     padding-left: clamp(16px, 8vw, 128px);
+    padding-right: clamp(16px, 12vw, 156px);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .logo {
@@ -28,6 +31,38 @@ header {
 img {
     margin-bottom: -4px;
     width: clamp(40px, 8vw, 50px);
+}
+
+h1 {
+    font-weight: 600;
+    color: rgb(255, 253, 240);
+}
+
+.feedBack {
+    background: rgba(255,255,255,0.1);
+    color: rgb(255, 253, 240);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 8px;
+    padding: 6px 14px;
+    padding-left: 6px;
+    font-size: 13px;
+    font-family: inherit;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    transition: all 150ms ease;
+}
+
+.feedBack svg {
+    width: 16px;
+    height: 16px;
+    stroke-width: 1.5;
+    margin: 0 8px;
+    margin-bottom: -2px;
+}
+
+.feedBack:hover {
+    background: rgba(255,255,255,0.2);
 }
 
 .container {
@@ -826,10 +861,23 @@ select.inputField {
 
     header {
         height: 54px;
-        line-height: 54px;
         margin-bottom: 0;
         padding-left: 16px;
+        padding-right: 12px;
         font-size: 15px;
+    }
+
+    .feedBack {
+        padding: 5px 10px;
+        font-size: 14px;
+    }
+
+    .feedBack span {
+        display: none;
+    }
+
+    .feedBack svg {
+        margin: 0;
     }
 
     .searchLabel {

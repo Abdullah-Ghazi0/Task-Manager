@@ -1,5 +1,5 @@
 import { state, changeTaskColumn } from "./state.js";
-import { getTaskFromId, showToast } from "./utils.js";
+import { getTaskFromId, showToast, trackEvent } from "./utils.js";
 import { render } from "./render.js";
 import { storeCustomOrder, updateStorage } from "./storage.js";
 import { touchCleanUp, swipeLeft, swipeRight } from "./touch.js";
@@ -102,6 +102,7 @@ function changeStatusOnDrag(newColumn, cordsY) {
     storeCustomOrder();
     updateStorage();
     render();
+    trackEvent('task_dragged', { to:newStatus})
 }
 
 function initDragging() {
