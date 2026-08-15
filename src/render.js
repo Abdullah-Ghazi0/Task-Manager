@@ -73,6 +73,7 @@ function addEventsToCard(task, card, status, edit, rm, cancel, confDel) {
     confDel.addEventListener("click", () => {
         task.rmTask();
         updateStorage();
+        storeCustomOrder();
         render();
     })
 
