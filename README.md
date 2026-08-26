@@ -2,6 +2,10 @@
 
 A fast, minimal kanban task manager. Create tasks, set priorities, track progress — drag and drop between columns on both desktop and mobile.
 
+TascaDrop does not use any drag-and-drop or gesture library. The entire drag-and-drop system was implemented from scratch using native browser APIs and JavaScript event handling.
+The implementation supports both mouse and touch interactions, including cross-column dragging, mobile auto-scrolling/swiping, drag positioning, drop detection, and persistent task reordering.
+I intentionally avoided external drag-and-drop libraries because I wanted to understand how these interactions work at a lower level.
+
 **[Live Demo →](https://tascadrop.netlify.app)**
 
 ![TascaDrop Screenshot](static/og-image.png)
